@@ -1,5 +1,7 @@
 from Spot import *
 
+
+
 class GameMap:
     map = []
 
@@ -69,5 +71,3 @@ class GameMap:
             for c in r:
                 c.printColumn()
             print()
-
-        #print(str(i))
