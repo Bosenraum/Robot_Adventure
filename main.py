@@ -1,6 +1,16 @@
 from Spot import *
 from Characters import *
 
+# print the map
+def printMap(map):
+    for r in map:
+        for c in r:
+            c.printRow()
+        print()
+        for c in r:
+            c.printColumn()
+        print()
+
 # Create 2D array of spots
 map = [[]*5 for i in range(5)]
 
@@ -57,16 +67,10 @@ for i in range(len(map)):
 
 cur = map[0][0]
 cur.enter()
+printMap(map)
 cur = cur.move(Directions.EAST)
 cur = cur.move(Directions.SOUTH)
 cur = cur.move(Directions.WEST)
 cur = cur.move(Directions.NORTH)
 
-# print the map
-for r in map:
-    for c in r:
-        c.printRow()
-    print()
-    for c in r:
-        c.printColumn()
-    print()
+printMap(map)
