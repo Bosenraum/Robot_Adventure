@@ -50,6 +50,7 @@ class Spot:
                 return self.westSpot
         else:
             print("INVALID MOVE")
+            return self
 
     def isValidDir(self, dir):
         if(dir == Directions.NORTH and self.north):
