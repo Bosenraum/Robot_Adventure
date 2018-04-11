@@ -19,6 +19,7 @@ class SpotType(Enum):
 	END	= 7
 
 class Spot:
+	player = None
 
 	def __init__(self, val):
 		self.marked  = False
@@ -35,6 +36,10 @@ class Spot:
 	def __str__(self):
 		return str(self.val)
 
+	@staticmethod
+	def setPlayer(player):
+		Spot.player = player
+
 	# What to do when the player enters this spot
 	def enter(self):
 		self.entered = True
@@ -45,8 +50,9 @@ class Spot:
 			exit()
 		elif(self.type == SpotType.CHARGE):
 			# Refill hp
-			self.hp = Player.maxHP
+			Spot.player.heal()
 			print("HP REFILLED")
+			print(str(Spot.player.getHealth()))
 
 		elif(self.type == SpotType.COFFEE):
 			print("THE BITTER TASTE OF COFFEE FILLS YOU WITH DETERMINATION")
@@ -58,6 +64,19 @@ class Spot:
 				print("MEDIUM SQUEEZY")
 			else:
 				print("DIFFICULT DIFFICULT LEMON DIFFICULT")
+				
+			while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
+				Spot.player.attack(self.enemy)
+				if(self.enemy.getHealth() <= 0):
+					print("ENEMY DEFEATED")
+					print(str(Spot.player.getHealth()))
+					break
+				self.enemy.attack(Spot.player)
+				if(Spot.player.getHealth() <= 0):
+					print("YOU LOSE")
+					exit()
+			self.enemy = None
+			self.setType(SpotType.EMPTY)
 		elif(self.type == SpotType.FUN):
 			print("GLHF")
 		else:
@@ -177,13 +196,13 @@ class Spot:
 		else:
 			return False
 
-	# DFS function to find next direction from coffee shop?
+	# # DFS function to find next direction from coffee shop?
 	# def DFS(self):
 	# 	self.setVisited(True)
-	# 	numHops = 0
 	#
-	# 	if(self.type = SpotType.END):
-	# 		return numHops
+	#
+	# 	# if(self.type = SpotType.END):
+	# 	# 	return numHops
 	#
 	# 	if(self.northSpot != None and not self.northSpot.getVisited()):
 	# 		northHops = self.northSpot.DFS() + 1

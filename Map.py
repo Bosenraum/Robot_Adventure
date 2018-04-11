@@ -100,7 +100,7 @@ class GameMap:
 	def fillMap(map):
 		# put the player down first
 		# Get player name
-		name = "Austin"#input("What is your name? >> ")
+		name = input("What is your name? >> ")
 		if(name.lower() == "jake"):
 			print("Sorry, you can't play.")
 			exit()
