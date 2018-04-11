@@ -177,9 +177,24 @@ class Spot:
 		else:
 			return False
 
-	def DFS(self):
-		# mark self as visited
-		#
+	# DFS function to find next direction from coffee shop?
+	# def DFS(self):
+	# 	self.setVisited(True)
+	# 	numHops = 0
+	#
+	# 	if(self.type = SpotType.END):
+	# 		return numHops
+	#
+	# 	if(self.northSpot != None and not self.northSpot.getVisited()):
+	# 		northHops = self.northSpot.DFS() + 1
+	# 	if(self.eastSpot != None and not self.eastSpot.getVisited()):
+	# 		eastHops = self.eastSpot.DFS() + 1
+	# 	if(self.southSpot != None and not self.southSpot.getVisited()):
+	# 		southHops = self.southSpot.DFS() + 1
+	# 	if(self.westSpot != None and not self.westSpot.getVisited()):
+	# 		westHops = self.westSpot.DFS() + 1
+	#
+	# 	return min(northHops, eastHops, southHops, westHops)
 
 	def printRow(self):
 		if(self.entered):
