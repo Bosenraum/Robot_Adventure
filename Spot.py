@@ -1,176 +1,219 @@
 # Create map spots
 from enum import Enum
-from Characters import EnemyType
+from Characters import EnemyType, Player
 
 # Enumerate directions for later
 class Directions(Enum):
-    NORTH = 1
-    EAST  = 2
-    SOUTH = 3
-    WEST  = 4
+	NORTH = 1
+	EAST  = 2
+	SOUTH = 3
+	WEST  = 4
 
 class SpotType(Enum):
-    CHARGE = 1
-    COFFEE = 2
-    FIGHT  = 3
-    FUN    = 4
-    EMPTY  = 5
-    START  = 6
-    END    = 7
+	CHARGE = 1
+	COFFEE = 2
+	FIGHT  = 3
+	FUN	= 4
+	EMPTY  = 5
+	START  = 6
+	END	= 7
 
 class Spot:
 
-    def __init__(self, val):
-        self.marked  = False
-        self.entered = False
-        self.val = val + 1
-        self.type = SpotType.EMPTY
-        self.enemy     = None
-        self.northSpot = None
-        self.eastSpot  = None
-        self.southSpot = None
-        self.westSpot  = None
+	def __init__(self, val):
+		self.marked  = False
+		self.entered = False
+		self.visited = False
+		self.val = val + 1
+		self.type = SpotType.EMPTY
+		self.enemy	 = None
+		self.northSpot = None
+		self.eastSpot  = None
+		self.southSpot = None
+		self.westSpot  = None
 
-    def __str__(self):
-        return str(self.val)
+	def __str__(self):
+		return str(self.val)
 
-    # What to do when the player enters this spot
-    def enter(self):
-        self.entered = True
-        # Perform type specific action
-        # Give description of spot
-        if(self.type == SpotType.END):
-            print("YOU WIN!!")
-            exit()
+	# What to do when the player enters this spot
+	def enter(self):
+		self.entered = True
+		# Perform type specific action
+		# Give description of spot
+		if(self.type == SpotType.END):
+			print("YOU WIN!!")
+			exit()
+		elif(self.type == SpotType.CHARGE):
+			# Refill hp
+			self.hp = Player.maxHP
+			print("HP REFILLED")
 
-    def leave(self):
-        self.entered = False
+		elif(self.type == SpotType.COFFEE):
+			print("THE BITTER TASTE OF COFFEE FILLS YOU WITH DETERMINATION")
+		elif(self.type == SpotType.FIGHT):
+			print("FIGHT!")
+			if(self.enemy.getType() == EnemyType.EASY):
+				print("EASY PEASY")
+			elif(self.enemy.getType() == EnemyType.MEDIUM):
+				print("MEDIUM SQUEEZY")
+			else:
+				print("DIFFICULT DIFFICULT LEMON DIFFICULT")
+		elif(self.type == SpotType.FUN):
+			print("GLHF")
+		else:
+			print("NOTHING TO SEE HERE")
 
-    def move(self, dir):
-        if(self.isValidDir(dir)):
-            self.leave()
-            if(dir == Directions.NORTH):
-                self.northSpot.enter()
-                return self.northSpot
-            if(dir == Directions.EAST):
-                self.eastSpot.enter()
-                return self.eastSpot
-            if(dir == Directions.SOUTH):
-                self.southSpot.enter()
-                return self.southSpot
-            if(dir == Directions.WEST):
-                self.westSpot.enter()
-                return self.westSpot
-        else:
-            print("INVALID MOVE")
-            return self
+	def leave(self):
+		self.entered = False
 
-    def getMarked(self):
-        return self.marked
+	def move(self, dir):
+		if(self.isValidDir(dir)):
+			self.leave()
+			if(dir == Directions.NORTH):
+				self.northSpot.enter()
+				return self.northSpot
+			if(dir == Directions.EAST):
+				self.eastSpot.enter()
+				return self.eastSpot
+			if(dir == Directions.SOUTH):
+				self.southSpot.enter()
+				return self.southSpot
+			if(dir == Directions.WEST):
+				self.westSpot.enter()
+				return self.westSpot
+		else:
+			print("INVALID MOVE")
+			return self
 
-    def getType(self):
-        return self.type
+	def getMarked(self):
+		return self.marked
 
-    def setType(self, type):
-        self.type = type
-        self.marked = True
+	def getVisited(self):
+		return self.visited
 
-    def getEnemy(self):
-        return this.enemy
+	def setVisited(self, status):
+		self.visited = status
 
-    def setEnemy(self, enemy):
-        self.enemy = enemy
+	def getType(self):
+		return self.type
 
-    def setConnections(self, north=False, east=False, south=False, west=False):
-        self.north = north
-        self.east  = east
-        self.south = south
-        self.west  = west
+	def setType(self, type):
+		self.type = type
+		self.marked = True
 
-    def getNorth(self):
-        return self.north
+	def getEnemy(self):
+		return self.enemy
 
-    def setNorthSpot(self, spot):
-        self.northSpot = spot
+	def setEnemy(self, enemy):
+		self.enemy = enemy
 
-    def getEast(self):
-        return self.east
+	def setConnections(self, north=False, east=False, south=False, west=False):
+		self.north = north
+		self.east  = east
+		self.south = south
+		self.west  = west
 
-    def setEastSpot(self, spot):
-        self.eastSpot = spot
+	def getNorth(self):
+		return self.north
 
-    def getSouth(self):
-        return self.south
+	def setNorthSpot(self, spot):
+		self.northSpot = spot
 
-    def setSouthSpot(self, spot):
-        self.southSpot = spot
+	def getEast(self):
+		return self.east
 
-    def getWest(self):
-        return self.west
+	def setEastSpot(self, spot):
+		self.eastSpot = spot
 
-    def setWestSpot(self, spot):
-        self.westSpot = spot
+	def getSouth(self):
+		return self.south
 
-    # Return true if any neighboring spots are of the input type
-    # Used to disallow the same spotType's being adjacent
-    def checkNeighbors(self, type):
-        match = False
-        if(self.northSpot != None and self.northSpot.getType() == type):
-            match = True
-        elif(self.eastSpot != None and self.eastSpot.getType() == type):
-            match = True
-        elif(self.southSpot != None and self.southSpot.getType() == type):
-            match = True
-        elif(self.westSpot != None and self.westSpot.getType() == type):
-            match = True
+	def setSouthSpot(self, spot):
+		self.southSpot = spot
 
-        return match
+	def getWest(self):
+		return self.west
 
-    def isValidDir(self, dir):
-        if(dir == Directions.NORTH and self.north):
-            return True
-        elif(dir == Directions.EAST and self.east):
-            return True
-        elif(dir == Directions.SOUTH and self.south):
-            return True
-        elif(dir == Directions.WEST and self.west):
-            return True
-        else:
-            return False
+	def setWestSpot(self, spot):
+		self.westSpot = spot
 
-    def printRow(self):
-        if(self.entered):
-            print("XX", end="")
-        elif(self.type == SpotType.START):
-            print("SS", end="")
-        elif(self.type == SpotType.END):
-            print("EN", end="")
-        elif(self.type == SpotType.CHARGE):
-            print("CH", end="")
-        elif(self.type == SpotType.COFFEE):
-            print("CO", end="")
-        elif(self.type == SpotType.FIGHT):
-            if(self.enemy.getType() == EnemyType.EASY):
-                print("EE", end="")
-            elif(self.enemy.getType() == EnemyType.MEDIUM):
-                print("MM", end="")
-            else:
-                print("HH", end="")
-        elif(self.type == SpotType.FUN):
-            print("FU", end="")
-        else:
-            if(self.val <= 10):
-                print(" " + str(self.val), end="")
-            else:
-                print(self.val, end="")
+	# Return true if any neighboring spots are of the input type
+	# Used to disallow the same spotType's being adjacent
+	def checkNeighbors(self, type):
+		match = False
+		if(self.northSpot != None and self.northSpot.getType() == type):
+			match = True
+		elif(self.eastSpot != None and self.eastSpot.getType() == type):
+			match = True
+		elif(self.southSpot != None and self.southSpot.getType() == type):
+			match = True
+		elif(self.westSpot != None and self.westSpot.getType() == type):
+			match = True
 
-        if(self.east):
-            print("---", end="")
-        else:
-            print("   ", end="")
+		return match
 
-    def printColumn(self):
-        if(self.south):
-            print(" |   ", end="")
-        else:
-            print("     ", end="")
+	def checkNeighborEnemies(self, enemyType):
+		match = False
+		if(self.northSpot != None and self.northSpot.getEnemy() != None and self.northSpot.getEnemy().getType() == enemyType):
+			match = True
+		elif(self.eastSpot != None and self.eastSpot.getEnemy() != None and self.eastSpot.getEnemy().getType() == enemyType):
+			match = True
+		elif(self.southSpot != None and self.southSpot.getEnemy() != None and self.southSpot.getEnemy().getType() == enemyType):
+			match = True
+		elif(self.westSpot != None and self.westSpot.getEnemy() != None and self.westSpot.getEnemy().getType() == enemyType):
+			match = True
+
+		return match
+
+	def isValidDir(self, dir):
+		if(dir == Directions.NORTH and self.north):
+			return True
+		elif(dir == Directions.EAST and self.east):
+			return True
+		elif(dir == Directions.SOUTH and self.south):
+			return True
+		elif(dir == Directions.WEST and self.west):
+			return True
+		else:
+			return False
+
+	def DFS(self):
+		# mark self as visited
+		#
+
+	def printRow(self):
+		if(self.entered):
+			print("XX", end="")
+		elif(self.type == SpotType.START):
+			print("SS", end="")
+		elif(self.type == SpotType.END):
+			print("@@", end="")
+		elif(self.type == SpotType.CHARGE):
+			print("CH", end="")
+		elif(self.type == SpotType.COFFEE):
+			print("CO", end="")
+		elif(self.type == SpotType.FIGHT):
+			if(self.enemy.getType() == EnemyType.EASY):
+				print("EE", end="")
+			elif(self.enemy.getType() == EnemyType.MEDIUM):
+				print("MM", end="")
+			else:
+				print("HH", end="")
+		elif(self.type == SpotType.FUN):
+			print("FU", end="")
+		else:
+			if(self.val <= 10):
+				print(" " + str(self.val), end="")
+			else:
+				print(self.val, end="")
+
+		if(self.east):
+			print("---", end="")
+		else:
+			print("   ", end="")
+
+	def printColumn(self):
+		if(self.south):
+			print(" |   ", end="")
+		else:
+			print("     ", end="")
