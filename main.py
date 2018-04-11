@@ -3,6 +3,8 @@ from Spot import *
 from Map import GameMap
 #mport random
 
+print("WELCOME TO YOUR NIGHTMARE")
+
 map = GameMap.makeMap()
 
 dict = GameMap.fillMap(map)
@@ -10,19 +12,21 @@ cur = dict["Spot"]
 player = dict["Player"]
 
 Spot.setPlayer(player)
+Spot.setCur(cur)
 
 GameMap.printMap(map)
 
 dir = input("Where would you like to go? >> ")
 while(dir.lower() != "quit"):
 	if(dir.lower() == "north"):
-		cur = cur.move(Directions.NORTH)
+		# cur = cur.move(Directions.NORTH)
+		Spot.getCur().move(Directions.NORTH)
 	elif(dir.lower() == "east"):
-		cur = cur.move(Directions.EAST)
+		Spot.getCur().move(Directions.EAST)
 	elif(dir.lower() == "south"):
-		cur = cur.move(Directions.SOUTH)
+		Spot.getCur().move(Directions.SOUTH)
 	elif(dir.lower() == "west"):
-		cur = cur.move(Directions.WEST)
+		Spot.getCur().move(Directions.WEST)
 	else:
 		print("That's not a valid direction")
 	GameMap.printMap(map)

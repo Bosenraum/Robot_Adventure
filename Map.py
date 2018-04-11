@@ -101,10 +101,10 @@ class GameMap:
 		# put the player down first
 		# Get player name
 		name = input("What is your name? >> ")
-		if(name.lower() == "jake"):
+		if(name.lower()[:4] == "jake" or name.lower()[:5] == "jacob"):
 			print("Sorry, you can't play.")
 			exit()
-		player = Player(name)
+		player = Player(name.upper())
 
 		coinFlip = random.choice([True, False])
 

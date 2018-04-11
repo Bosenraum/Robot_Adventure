@@ -1,6 +1,8 @@
 # Create map spots
 from enum import Enum
 from Characters import EnemyType, Player
+import random
+import time
 
 # Enumerate directions for later
 class Directions(Enum):
@@ -20,6 +22,7 @@ class SpotType(Enum):
 
 class Spot:
 	player = None
+	cur = None
 
 	def __init__(self, val):
 		self.marked  = False
@@ -40,9 +43,18 @@ class Spot:
 	def setPlayer(player):
 		Spot.player = player
 
+	@staticmethod
+	def setCur(spot):
+		Spot.cur = spot
+
+	@staticmethod
+	def getCur():
+		return Spot.cur
+
 	# What to do when the player enters this spot
 	def enter(self):
 		self.entered = True
+		flee = False
 		# Perform type specific action
 		# Give description of spot
 		if(self.type == SpotType.END):
@@ -64,23 +76,65 @@ class Spot:
 				print("MEDIUM SQUEEZY")
 			else:
 				print("DIFFICULT DIFFICULT LEMON DIFFICULT")
-				
+
 			while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
-				Spot.player.attack(self.enemy)
-				if(self.enemy.getHealth() <= 0):
-					print("ENEMY DEFEATED")
-					print(str(Spot.player.getHealth()))
+				choice = input("Attack or Flee? >> ")
+				if(choice.lower() == "attack"):
+
+					Spot.player.attack(self.enemy)
+					if(self.enemy.getHealth() <= 0):
+						print("ENEMY DEFEATED")
+						print(str(Spot.player.getHealth()))
+						break
+					self.enemy.attack(Spot.player)
+					if(Spot.player.getHealth() <= 0):
+						print("YOU LOSE")
+						exit()
+				else:
+					flee = True
 					break
-				self.enemy.attack(Spot.player)
-				if(Spot.player.getHealth() <= 0):
-					print("YOU LOSE")
-					exit()
-			self.enemy = None
-			self.setType(SpotType.EMPTY)
+
+			if(not flee):
+				self.enemy = None
+				self.setType(SpotType.EMPTY)
+			else:
+				self.flee()
 		elif(self.type == SpotType.FUN):
-			print("GLHF")
+			print(f"HELLO {Spot.player.getName()}")
+			print("ANSWER THIS RIDDLE IF YOU WISH TO LIVE")
+			print("WHAT IS THE CREATURE THAT WALKS ON FOUR LEGS IN THE MORNING,\nTWO LEGS AT NOON,\nAND THREE LEGS IN THE EVENING?")
+			answer = input(">> ")
+			while(answer.lower() != "man"):
+				print("INCORRECT")
+				Spot.player.loseHealth(50)
+				if(Spot.player.getHealth() <= 0):
+					print("YOU MUST DIE..")
+					for i in range(3):
+						print("."*(i+1))
+						time.sleep(1)
+					print("YOU DIED")
+					exit()
+				print(f"{Spot.player.getHealth()} HP remaining")
+				answer = input(">> ")
+			print("*SPHINX DIES*")
 		else:
 			print("NOTHING TO SEE HERE")
+
+	def flee(self):
+		#self.leave()
+		# check for valid spots adjacent to current spot, pick one randomly and enter
+		dirs = []
+		if(self.northSpot != None):
+			dirs.append(Directions.NORTH)
+		if(self.eastSpot != None):
+			dirs.append(Directions.EAST)
+		if(self.southSpot != None):
+			dirs.append(Directions.SOUTH)
+		if(self.westSpot != None):
+			dirs.append(Directions.WEST)
+
+		Spot.cur.move(random.choice(dirs))
+
 
 	def leave(self):
 		self.entered = False
@@ -89,15 +143,19 @@ class Spot:
 		if(self.isValidDir(dir)):
 			self.leave()
 			if(dir == Directions.NORTH):
+				Spot.cur = self.northSpot
 				self.northSpot.enter()
 				return self.northSpot
 			if(dir == Directions.EAST):
+				Spot.cur = self.eastSpot
 				self.eastSpot.enter()
 				return self.eastSpot
 			if(dir == Directions.SOUTH):
+				Spot.cur = self.southSpot
 				self.southSpot.enter()
 				return self.southSpot
 			if(dir == Directions.WEST):
+				Spot.cur = self.westSpot
 				self.westSpot.enter()
 				return self.westSpot
 		else:
