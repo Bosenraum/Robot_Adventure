@@ -1,3 +1,8 @@
+# CSCI-455 Final Project - Robot Adventure
+# Austin Rosenbaum and Andrew Beck
+
+# Sound effects obtained from https://www.zapsplat.com
+
 from Spot import *
 from Map import GameMap
 import re

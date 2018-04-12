@@ -154,12 +154,27 @@ class GameMap:
 				spot = GameMap.getOpenSpot()
 			spot.setType(SpotType.COFFEE)
 
-		for i in range(3):
-			# place fun spots
+
+		# Place riddle
+		spot = GameMap.getOpenSpot()
+		while(spot.checkNeighbors(SpotType.FUN)):
 			spot = GameMap.getOpenSpot()
-			while(spot.checkNeighbors(SpotType.FUN)):
-				spot = GameMap.getOpenSpot()
-			spot.setType(SpotType.FUN)
+		spot.setType(SpotType.FUN)
+		spot.setFunType(FunType.RIDDLE)
+
+		# place puzzle
+		spot = GameMap.getOpenSpot()
+		while(spot.checkNeighbors(SpotType.FUN)):
+			spot = GameMap.getOpenSpot()
+		spot.setType(SpotType.FUN)
+		spot.setFunType(FunType.PUZZLE)
+
+		# place boss
+		spot = GameMap.getOpenSpot()
+		while(spot.checkNeighbors(SpotType.FUN)):
+			spot = GameMap.getOpenSpot()
+		spot.setType(SpotType.FUN)
+		spot.setFunType(FunType.BOSS)
 
 		# 6 Easy, 5 Medium,3 Hard enemies
 		for i in range(3):

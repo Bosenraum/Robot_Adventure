@@ -3,6 +3,9 @@ from enum import Enum
 from Characters import EnemyType, Player
 import random
 import time
+from pygame import mixer
+
+mixer.init()
 
 # Enumerate directions for later
 class Directions(Enum):
@@ -20,6 +23,11 @@ class SpotType(Enum):
 	START  = 6
 	END	= 7
 
+class FunType(Enum):
+	RIDDLE = 1 # Sphinx riddle
+	PUZZLE = 2 # A basic puzzle
+	BOSS   = 3 # Fight a strong enemy that you can't flee from
+
 class Spot:
 	player = None
 	cur = None
@@ -30,7 +38,8 @@ class Spot:
 		self.visited = False
 		self.val = val + 1
 		self.type = SpotType.EMPTY
-		self.enemy	 = None
+		self.enemy	   = None
+		self.funType   = None
 		self.northSpot = None
 		self.eastSpot  = None
 		self.southSpot = None
@@ -120,25 +129,7 @@ class Spot:
 
 		# Need multiple fun spots
 		elif(self.type == SpotType.FUN):
-			print(f"HELLO {Spot.player.getName()}")
-			print("ANSWER THIS RIDDLE IF YOU WISH TO LIVE")
-			print("WHAT IS THE CREATURE THAT WALKS ON FOUR LEGS IN THE MORNING,\nTWO LEGS AT NOON,\nAND THREE LEGS IN THE EVENING?\n")
-			answer = input(">> ")
-			print()
-			while(answer.lower() != "man"):
-				print("INCORRECT")
-				Spot.player.loseHealth(50)
-				if(Spot.player.getHealth() <= 0):
-					print("YOU MUST DIE..")
-					for i in range(3):
-						print("."*(i+1))
-						time.sleep(1)
-					print("YOU HAVE DIED")
-					Spot.player.lose()
-				print(f"{Spot.player.getHealth()} HP remaining")
-				answer = input(">> ")
-				print()
-			print("*SPHINX DIES*")
+			self.haveFun()
 			self.type = SpotType.EMPTY
 
 		else:
@@ -206,6 +197,9 @@ class Spot:
 	def setType(self, type):
 		self.type = type
 		self.marked = True
+
+	def setFunType(self, type):
+		self.funType = type
 
 	def getEnemy(self):
 		return self.enemy
@@ -362,7 +356,12 @@ class Spot:
 			else:
 				print("HH", end="")
 		elif(self.type == SpotType.FUN):
-			print("FU", end="")
+			if(self.funType == FunType.RIDDLE):
+				print("RI", end="")
+			elif(self.funType == FunType.PUZZLE):
+				print("ZZ", end="")
+			else:
+				print("BB", end="")
 		else:
 			if(self.val <= 10):
 				print(" " + str(self.val), end="")
@@ -379,3 +378,38 @@ class Spot:
 			print(" |   ", end="")
 		else:
 			print("     ", end="")
+
+	def haveFun(self):
+		if(self.funType == FunType.RIDDLE):
+			mixer.music.load("audio/wrong_answer.mp3")
+			print(f"HELLO {Spot.player.getName()}")
+			print("ANSWER THIS RIDDLE IF YOU WISH TO LIVE")
+			print("WHAT IS THE CREATURE THAT WALKS ON FOUR LEGS IN THE MORNING,\nTWO LEGS AT NOON,\nAND THREE LEGS IN THE EVENING?\n")
+			answer = input(">> ")
+			print()
+			while(answer.lower() != "man"):
+				mixer.music.play()
+				time.sleep(1)
+				mixer.music.stop()
+				print("INCORRECT")
+				Spot.player.loseHealth(50)
+				if(Spot.player.getHealth() <= 0):
+					print("YOU MUST DIE..")
+					for i in range(3):
+						print("."*(i+1))
+						time.sleep(1)
+					print("YOU HAVE DIED")
+					Spot.player.lose()
+				print(f"{Spot.player.getHealth()} HP remaining")
+				answer = input(">> ")
+				print()
+			print("*SPHINX DIES*")
+		elif(self.funType == FunType.PUZZLE):
+			print("SOLVE A PUZZLE")
+			time.sleep(2)
+		else:
+			print("FIGHT A BOSS")
+			mixer.music.load("audio/wizard_battle.mp3")
+			mixer.music.play()
+			time.sleep(2)
+			mixer.music.stop()
