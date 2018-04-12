@@ -2,7 +2,10 @@
 # Create player character'
 
 from enum import Enum
-import random
+import random, time
+import pygame
+
+pygame.mixer.init()
 
 class EnemyType(Enum):
 	EASY   = 1
@@ -109,13 +112,21 @@ class Enemy:
 
 	# return a random value based on the strength of the enemy
 	def attack(self, player):
-		# if(self.type == EnemyType.HARD):
-		# 	print("Hard attack")
+		if(self.type == EnemyType.HARD):
+			pygame.mixer.music.load("audio/hard_hit.mp3")
+		elif(self.type == EnemyType.MEDIUM):
+			pygame.mixer.music.load("audio/medium_hit.mp3")
+		else:
+			pygame.mixer.music.load("audio/weak_hit.mp3")
+
 		damage = self.strength * (random.choice(range(self.damageMin, self.damageMax)))
 		player.loseHealth(damage)
 
 		print(f"Enemy attacked for {damage} damage -- ", end="")
 		print(f"You have {player.getHealth()} HP remaining")
+
+		pygame.mixer.music.play()
+		time.sleep(1)
 
 	def getStatus(self):
 		print(f"ENEMY HP: {self.hp}")

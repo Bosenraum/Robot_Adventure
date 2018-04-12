@@ -46,6 +46,7 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 		print("INVALID DIRECTION")
 		printMap = False
 	if(printMap):
+		pass
 		GameMap.printMap(map)
 	GameMap.clearVisited()
 

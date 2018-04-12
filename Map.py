@@ -182,7 +182,7 @@ class GameMap:
 			spot.setEnemy(e)
 			spot.setType(SpotType.FIGHT)
 
-		print("Done placing")
+		#print("Done placing")
 		#GameMap.printMap(map)
 
 		return {"Spot": cur, "Player": player}

@@ -58,6 +58,7 @@ class Spot:
 
 	# What to do when the player enters this spot
 	def enter(self):
+		print()
 		self.entered = True
 		flee = False
 		# Perform type specific action
@@ -78,7 +79,7 @@ class Spot:
 			elif(nextDir == "error"):
 				print("ERROR: ERROR WAS RETURNED")
 			else:
-				print(f"YOU MUST GO {nextDir.upper()} FROM HERE TO REACH THE END")
+				print(f"YOU MUST GO {nextDir.upper()} FROM HERE TO REACH THE END\n")
 		elif(self.type == SpotType.FIGHT):
 			print("FIGHT!")
 			if(self.enemy.getType() == EnemyType.EASY):
@@ -90,12 +91,12 @@ class Spot:
 
 			while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
 				choice = input("Attack or Flee? >> ")
+				print()
 				if(choice.lower() in ["attack", "a"]):
 
 					Spot.player.attack(self.enemy)
 					if(self.enemy.getHealth() <= 0):
-						print("ENEMY DEFEATED")
-						print(str(Spot.player.getHealth()))
+						print("ENEMY DEFEATED\n")
 						break
 					self.enemy.attack(Spot.player)
 					Spot.checkLose()
@@ -116,11 +117,14 @@ class Spot:
 				self.type = SpotType.EMPTY
 			else:
 				self.flee()
+
+		# Need multiple fun spots
 		elif(self.type == SpotType.FUN):
 			print(f"HELLO {Spot.player.getName()}")
 			print("ANSWER THIS RIDDLE IF YOU WISH TO LIVE")
-			print("WHAT IS THE CREATURE THAT WALKS ON FOUR LEGS IN THE MORNING,\nTWO LEGS AT NOON,\nAND THREE LEGS IN THE EVENING?")
+			print("WHAT IS THE CREATURE THAT WALKS ON FOUR LEGS IN THE MORNING,\nTWO LEGS AT NOON,\nAND THREE LEGS IN THE EVENING?\n")
 			answer = input(">> ")
+			print()
 			while(answer.lower() != "man"):
 				print("INCORRECT")
 				Spot.player.loseHealth(50)
@@ -133,11 +137,13 @@ class Spot:
 					Spot.player.lose()
 				print(f"{Spot.player.getHealth()} HP remaining")
 				answer = input(">> ")
+				print()
 			print("*SPHINX DIES*")
 			self.type = SpotType.EMPTY
 
 		else:
 			print("NOTHING TO SEE HERE")
+			print()
 
 	def flee(self):
 		#self.leave()
