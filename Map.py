@@ -186,3 +186,9 @@ class GameMap:
 		#GameMap.printMap(map)
 
 		return {"Spot": cur, "Player": player}
+
+	@staticmethod
+	def clearVisited():
+		for i in range(len(GameMap.map)):
+			for j in range(len(GameMap.map)):
+				GameMap.map[i][j].setVisited(False)

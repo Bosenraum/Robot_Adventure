@@ -51,6 +51,11 @@ class Spot:
 	def getCur():
 		return Spot.cur
 
+	@staticmethod
+	def checkLose():
+		if(Spot.player.getHealth() <= 0):
+			Spot.player.lose()
+
 	# What to do when the player enters this spot
 	def enter(self):
 		self.entered = True
@@ -58,16 +63,22 @@ class Spot:
 		# Perform type specific action
 		# Give description of spot
 		if(self.type == SpotType.END):
-			print("YOU WIN!!")
-			exit()
+			Spot.player.win()
 		elif(self.type == SpotType.CHARGE):
 			# Refill hp
 			Spot.player.heal()
-			print("HP REFILLED")
-			print(str(Spot.player.getHealth()))
+
 
 		elif(self.type == SpotType.COFFEE):
 			print("THE BITTER TASTE OF COFFEE FILLS YOU WITH DETERMINATION")
+			# Need to clear the visited label for all spots before searching
+			nextDir = self.DFS()
+			if(nextDir == None):
+				print("ERROR: NO END FOUND")
+			elif(nextDir == "error"):
+				print("ERROR: ERROR WAS RETURNED")
+			else:
+				print(f"YOU MUST GO {nextDir.upper()} FROM HERE TO REACH THE END")
 		elif(self.type == SpotType.FIGHT):
 			print("FIGHT!")
 			if(self.enemy.getType() == EnemyType.EASY):
@@ -79,7 +90,7 @@ class Spot:
 
 			while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
 				choice = input("Attack or Flee? >> ")
-				if(choice.lower() == "attack"):
+				if(choice.lower() in ["attack", "a"]):
 
 					Spot.player.attack(self.enemy)
 					if(self.enemy.getHealth() <= 0):
@@ -87,16 +98,22 @@ class Spot:
 						print(str(Spot.player.getHealth()))
 						break
 					self.enemy.attack(Spot.player)
-					if(Spot.player.getHealth() <= 0):
-						print("YOU LOSE")
-						exit()
-				else:
+					Spot.checkLose()
+
+				elif(choice.lower() in ["flee", "f"]):
 					flee = True
 					break
+				elif(choice.lower() in ["status", "s"]):
+					Spot.player.getStatus()
+					self.enemy.getStatus()
+				else:
+					print("INVALID MOVE")
+					self.enemy.attack(Spot.player)
+					Spot.checkLose()
 
 			if(not flee):
 				self.enemy = None
-				self.setType(SpotType.EMPTY)
+				self.type = SpotType.EMPTY
 			else:
 				self.flee()
 		elif(self.type == SpotType.FUN):
@@ -112,11 +129,13 @@ class Spot:
 					for i in range(3):
 						print("."*(i+1))
 						time.sleep(1)
-					print("YOU DIED")
-					exit()
+					print("YOU HAVE DIED")
+					Spot.player.lose()
 				print(f"{Spot.player.getHealth()} HP remaining")
 				answer = input(">> ")
 			print("*SPHINX DIES*")
+			self.type = SpotType.EMPTY
+
 		else:
 			print("NOTHING TO SEE HERE")
 
@@ -145,18 +164,22 @@ class Spot:
 			if(dir == Directions.NORTH):
 				Spot.cur = self.northSpot
 				self.northSpot.enter()
+				Spot.player.move()
 				return self.northSpot
 			if(dir == Directions.EAST):
 				Spot.cur = self.eastSpot
 				self.eastSpot.enter()
+				Spot.player.move()
 				return self.eastSpot
 			if(dir == Directions.SOUTH):
 				Spot.cur = self.southSpot
 				self.southSpot.enter()
+				Spot.player.move()
 				return self.southSpot
 			if(dir == Directions.WEST):
 				Spot.cur = self.westSpot
 				self.westSpot.enter()
+				Spot.player.move()
 				return self.westSpot
 		else:
 			print("INVALID MOVE")
@@ -254,24 +277,65 @@ class Spot:
 		else:
 			return False
 
+	def validMoves(self):
+		dirs = []
+		if(self.north):
+			dirs.append("NORTH")
+		if(self.east):
+			dirs.append("EAST")
+		if(self.south):
+			dirs.append("SOUTH")
+		if(self.west):
+			dirs.append("WEST")
+
+		if(len(dirs) == 1):
+			output = "THERE IS A PATH LEADING " + dirs[0]
+		elif(len(dirs) == 2):
+			output = "THERE ARE PATHS LEADING " + dirs[0] + " AND " + dirs[1]
+		else:
+			output = "THERE ARE PATHS LEADING "
+			for i in range(len(dirs) - 1):
+				output += dirs[i] + ", "
+			output += "AND " + dirs[-1]
+
+		print(output)
+
 	# # DFS function to find next direction from coffee shop?
-	# def DFS(self):
-	# 	self.setVisited(True)
-	#
-	#
-	# 	# if(self.type = SpotType.END):
-	# 	# 	return numHops
-	#
-	# 	if(self.northSpot != None and not self.northSpot.getVisited()):
-	# 		northHops = self.northSpot.DFS() + 1
-	# 	if(self.eastSpot != None and not self.eastSpot.getVisited()):
-	# 		eastHops = self.eastSpot.DFS() + 1
-	# 	if(self.southSpot != None and not self.southSpot.getVisited()):
-	# 		southHops = self.southSpot.DFS() + 1
-	# 	if(self.westSpot != None and not self.westSpot.getVisited()):
-	# 		westHops = self.westSpot.DFS() + 1
-	#
-	# 	return min(northHops, eastHops, southHops, westHops)
+	def DFS(self):
+		self.setVisited(True)
+
+		dir = None
+
+		if(self.northSpot != None and not self.northSpot.getVisited()):
+			if(self.northSpot.getType() == SpotType.END):
+				return "north"
+			else:
+				dir = self.northSpot.DFS()
+				if(dir != None and dir != "error"):
+					return "north"
+		if(self.eastSpot != None and not self.eastSpot.getVisited()):
+			if(self.eastSpot.getType() == SpotType.END):
+				return "east"
+			else:
+				dir = self.eastSpot.DFS()
+				if(dir != None and dir != "error"):
+					return "east"
+		if(self.southSpot != None and not self.southSpot.getVisited()):
+			if(self.southSpot.getType() == SpotType.END):
+				return "south"
+			else:
+				dir = self.southSpot.DFS()
+				if(dir != None and dir != "error"):
+					return "south"
+		if(self.westSpot != None and not self.westSpot.getVisited()):
+			if(self.westSpot.getType() == SpotType.END):
+				return "west"
+			else:
+				dir = self.westSpot.DFS()
+				if(dir != None and dir != "error"):
+					return "west"
+
+		return "error"
 
 	def printRow(self):
 		if(self.entered):

@@ -11,18 +11,32 @@ class EnemyType(Enum):
 
 class Player:
 	maxHP = 200
+	maxMoves = 30
 
 	def __init__(self, name):
-		self.name = name
-		self.hp = Player.maxHP
-		self.damageMin = 20
-		self.damageMax = 40
+		if(name.lower() != "superultrawinning"):
+			self.name = name
+			self.hp = Player.maxHP
+			self.damageMin = 20
+			self.damageMax = 40
+			self.cheated = False
+		else:
+			self.name = "CHEATER"
+			self.hp = 1000
+			self.damageMin = 1000
+			self.damageMax = 2000
+			self.cheated = True
+
+		self.movesTaken = 0
 
 	def getName(self):
 		return self.name
 
 	def getHealth(self):
 		return self.hp
+
+	def getMovesTaken(self):
+		return self.movesTaken
 
 	def loseHealth(self, val):
 		self.hp -= val
@@ -35,6 +49,35 @@ class Player:
 
 	def heal(self):
 		self.hp = Player.maxHP
+		print("HP REFILLED")
+		print(f"{self.name.upper()}'s HP: {self.hp}")
+
+	def getStatus(self):
+		print(f"{self.getRemaining()} MOVES REMAINING")
+		print(f"{self.name.upper()}'s HP: {self.hp}")
+
+	def getRemaining(self):
+		return Player.maxMoves - self.movesTaken
+
+	def move(self):
+		self.movesTaken += 1
+
+	def isCheater(self):
+		return self.cheated
+
+	def win(self):
+		if(not self.cheated):
+			print("YOU WIN!!")
+		else:
+			print("CHEATERS NEVER WIN!")
+		exit()
+
+	def lose(self):
+		if(self.cheated):
+			print("HOW COULD YOU CHEAT AND STILL LOSE?!")
+		else:
+			print("YOU LOSE")
+		exit()
 
 class Enemy:
 
@@ -73,4 +116,6 @@ class Enemy:
 
 		print(f"Enemy attacked for {damage} damage -- ", end="")
 		print(f"You have {player.getHealth()} HP remaining")
-		pass
+
+	def getStatus(self):
+		print(f"ENEMY HP: {self.hp}")
