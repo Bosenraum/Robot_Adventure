@@ -5,9 +5,17 @@
 
 from Spot import *
 from Map import GameMap
-import re
+import threading, time
+import pygame.mixer
 #from Characters import *
 #mport random
+
+pygame.mixer.init()
+
+theme = pygame.mixer.Sound('./audio/theme_wav.wav')
+theme.play()
+
+
 
 northWords = ["north", "up", "orth", "nrth", "noth", "norh", "nort", "onrth"]
 eastWords  = ["east", "right", "ast", "eat", "eas", "aest"]
@@ -46,7 +54,7 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 	elif(dir.lower() == "skip"):
 		player.move()
 	elif(dir.lower() == "die"):
-		player.lose()
+		break
 	else:
 		print("INVALID DIRECTION")
 		printMap = False
@@ -71,4 +79,6 @@ if(dir.lower() == "quit"):
 elif(remaining == 0):
 	player.lose()
 else:
-	print("WHAT HAPPENED?")
+	print("YOU LOSE")
+
+time.sleep(2)

@@ -113,11 +113,11 @@ class Enemy:
 	# return a random value based on the strength of the enemy
 	def attack(self, player):
 		if(self.type == EnemyType.HARD):
-			mixer.music.load("audio/hard_hit.mp3")
+			hit = mixer.Sound("audio/hard_hit.wav")
 		elif(self.type == EnemyType.MEDIUM):
-			mixer.music.load("audio/medium_hit.mp3")
+			hit = mixer.Sound("audio/medium_hit.wav")
 		else:
-			mixer.music.load("audio/weak_hit.mp3")
+			hit = mixer.Sound("audio/weak_hit.wav")
 
 		damage = self.strength * (random.choice(range(self.damageMin, self.damageMax)))
 		player.loseHealth(damage)
@@ -125,7 +125,7 @@ class Enemy:
 		print(f"Enemy attacked for {damage} damage -- ", end="")
 		print(f"You have {player.getHealth()} HP remaining")
 
-		mixer.music.play()
+		hit.play()
 		time.sleep(1)
 
 	def getStatus(self):
