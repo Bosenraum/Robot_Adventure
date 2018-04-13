@@ -1,11 +1,12 @@
 # Create map spots
 from enum import Enum
 from Characters import EnemyType, Player
+from Music import *
 import random
 import time
-from pygame import mixer
+#from pygame import mixer
 
-mixer.init()
+Sounds.init()
 
 # Enumerate directions for later
 class Directions(Enum):
@@ -99,6 +100,7 @@ class Spot:
 				print("DIFFICULT DIFFICULT LEMON DIFFICULT")
 
 			while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
+				time.sleep(1)
 				choice = input("Attack or Flee? >> ")
 				print()
 				if(choice.lower() in ["attack", "a"]):
@@ -107,6 +109,8 @@ class Spot:
 					if(self.enemy.getHealth() <= 0):
 						print("ENEMY DEFEATED\n")
 						break
+
+					time.sleep(1)
 					self.enemy.attack(Spot.player)
 					Spot.checkLose()
 
@@ -381,14 +385,14 @@ class Spot:
 
 	def haveFun(self):
 		if(self.funType == FunType.RIDDLE):
-			mixer.music.load("audio/wrong_answer.mp3")
+			soundType = SoundEffect.WRONG
 			print(f"HELLO {Spot.player.getName()}")
 			print("ANSWER THIS RIDDLE IF YOU WISH TO LIVE")
 			print("WHAT IS THE CREATURE THAT WALKS ON FOUR LEGS IN THE MORNING,\nTWO LEGS AT NOON,\nAND THREE LEGS IN THE EVENING?\n")
 			answer = input(">> ")
 			print()
 			while(answer.lower() != "man"):
-				mixer.music.play()
+				Sounds.playSound(soundType)
 				print("INCORRECT")
 				Spot.player.loseHealth(50)
 				if(Spot.player.getHealth() <= 0):
@@ -407,7 +411,11 @@ class Spot:
 			time.sleep(2)
 		else:
 			print("FIGHT A BOSS")
-			mixer.music.load("audio/wizard_battle.mp3")
-			mixer.music.play()
-			time.sleep(10)
-			mixer.music.stop()
+			Sounds.fadeSound(SoundEffect.THEME)
+			time.sleep(1)
+			Sounds.playSound(SoundEffect.BOSS)
+			while(input(">> ").lower() != "done"):
+				time.sleep(1)
+			Sounds.fadeSound(SoundEffect.BOSS)
+			time.sleep(1)
+			Sounds.startSound(SoundEffect.THEME)

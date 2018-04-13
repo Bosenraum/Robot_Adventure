@@ -4,16 +4,16 @@
 # Sound effects obtained from https://www.zapsplat.com
 
 from Spot import *
+from Music import *
 from Map import GameMap
 import threading, time
-#import pygame.mixer
+# import pygame.mixer
 #from Characters import *
-#mport random
+#import random
 
-#pygame.mixer.init()
+Sounds.init()
 
-#theme = pygame.mixer.Sound('./audio/theme_wav.wav')
-#theme.play()
+Sounds.playSound(SoundEffect.THEME)
 
 # Choose gameplay mode
 print("CHOOSE DIFFICULTY:")

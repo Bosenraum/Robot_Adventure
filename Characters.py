@@ -1,11 +1,12 @@
 # Create different enemies
 # Create player character'
 
+from Music import *
 from enum import Enum
 import random, time
-from pygame import mixer
+#from pygame import mixer
 
-mixer.init()
+Sounds.init()
 
 class EnemyType(Enum):
 	EASY   = 1
@@ -47,6 +48,9 @@ class Player:
 	def attack(self, enemy):
 		damage = random.choice(range(self.damageMin, self.damageMax+1))
 		enemy.loseHealth(damage);
+
+		Sounds.playSound(SoundEffect.MEDIUM)
+
 		print(f"You attacked for {damage} damage -- ", end="")
 		print(f"Enemy has {enemy.getHealth()} HP remaining")
 
@@ -112,12 +116,12 @@ class Enemy:
 
 	# return a random value based on the strength of the enemy
 	def attack(self, player):
-		# if(self.type == EnemyType.HARD):
-		# 	hit = mixer.Sound("audio/hard_hit.wav")
-		# elif(self.type == EnemyType.MEDIUM):
-		# 	hit = mixer.Sound("audio/medium_hit.wav")
-		# else:
-		# 	hit = mixer.Sound("audio/weak_hit.wav")
+		if(self.type == EnemyType.HARD):
+			soundType = SoundEffect.HARD
+		elif(self.type == EnemyType.MEDIUM):
+			soundType = SoundEffect.MEDIUM
+		else:
+			soundType = SoundEffect.WEAK
 
 		damage = self.strength * (random.choice(range(self.damageMin, self.damageMax)))
 		player.loseHealth(damage)
@@ -125,8 +129,7 @@ class Enemy:
 		print(f"Enemy attacked for {damage} damage -- ", end="")
 		print(f"You have {player.getHealth()} HP remaining")
 
-		#hit.play()
-		#time.sleep(1)
+		Sounds.playSound(soundType)
 
 	def getStatus(self):
 		print(f"ENEMY HP: {self.hp}")
