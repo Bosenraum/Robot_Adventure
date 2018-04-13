@@ -381,14 +381,14 @@ class Spot:
 
 	def haveFun(self):
 		if(self.funType == FunType.RIDDLE):
-			mixer.Sound("audio/wrong_answer.wav")
+			mixer.music.load("audio/wrong_answer.mp3")
 			print(f"HELLO {Spot.player.getName()}")
 			print("ANSWER THIS RIDDLE IF YOU WISH TO LIVE")
 			print("WHAT IS THE CREATURE THAT WALKS ON FOUR LEGS IN THE MORNING,\nTWO LEGS AT NOON,\nAND THREE LEGS IN THE EVENING?\n")
 			answer = input(">> ")
 			print()
 			while(answer.lower() != "man"):
-				mixer.Sound.play()
+				mixer.music.play()
 				print("INCORRECT")
 				Spot.player.loseHealth(50)
 				if(Spot.player.getHealth() <= 0):
@@ -407,7 +407,7 @@ class Spot:
 			time.sleep(2)
 		else:
 			print("FIGHT A BOSS")
-			mixer.Sound("audio/wizard_battle.wav")
-			mixer.Sound.play()
-			time.sleep(5)
-			mixer.Sound.stop()
+			mixer.music.load("audio/wizard_battle.mp3")
+			mixer.music.play()
+			time.sleep(10)
+			mixer.music.stop()

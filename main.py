@@ -6,15 +6,24 @@
 from Spot import *
 from Map import GameMap
 import threading, time
-import pygame.mixer
+#import pygame.mixer
 #from Characters import *
 #mport random
 
-pygame.mixer.init()
+#pygame.mixer.init()
 
-theme = pygame.mixer.Sound('./audio/theme_wav.wav')
-theme.play()
+#theme = pygame.mixer.Sound('./audio/theme_wav.wav')
+#theme.play()
 
+# Choose gameplay mode
+print("CHOOSE DIFFICULTY:")
+print("\t(1) EASY")
+print("\t(2) HARD")
+
+mode = input(">> ")
+while(mode != '1' and mode != '2'):
+    print("CHOOSE 1 OR 2")
+    mode = input(">> ")
 
 
 northWords = ["north", "up", "orth", "nrth", "noth", "norh", "nort", "onrth"]
@@ -34,8 +43,8 @@ player = dict["Player"]
 
 Spot.setPlayer(player)
 Spot.setCur(cur)
-
-GameMap.printMap(map)
+if(mode == "1"):
+    GameMap.printMap(map)
 
 Spot.getCur().validMoves()
 dir = input("Where would you like to go? >> ")
@@ -58,7 +67,7 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 	else:
 		print("INVALID DIRECTION")
 		printMap = False
-	if(printMap):
+	if(printMap and mode == "1"):
 		pass
 		GameMap.printMap(map)
 	GameMap.clearVisited()
