@@ -18,7 +18,7 @@ class Player:
 	maxMoves = 30
 
 	def __init__(self, name):
-		if(name.lower() != "superultrawinning"):
+		if(name.lower() != "suw"):
 			self.name = name
 			self.hp = Player.maxHP
 			self.damageMin = 20
@@ -73,10 +73,16 @@ class Player:
 		return self.cheated
 
 	def win(self):
+		# fade main theme
+		# Play the win music
 		if(not self.cheated):
 			print("YOU WIN!!")
 		else:
 			print("CHEATERS NEVER WIN!")
+		Sounds.fadeSound(SoundEffect.THEME)
+		time.sleep(1)
+		Sounds.playSound(SoundEffect.WIN)
+		time.sleep(2)
 		exit()
 
 	def lose(self):
@@ -84,6 +90,10 @@ class Player:
 			print("HOW COULD YOU CHEAT AND STILL LOSE?!")
 		else:
 			print("YOU LOSE")
+		Sounds.fadeSound(SoundEffect.THEME)
+		time.sleep(1)
+		Sounds.playSound(SoundEffect.LOSE)
+		time.sleep(2)
 		exit()
 
 class Enemy:

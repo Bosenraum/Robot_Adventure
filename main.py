@@ -17,13 +17,13 @@ Sounds.playSound(SoundEffect.THEME)
 
 # Choose gameplay mode
 print("CHOOSE DIFFICULTY:")
-print("\t(1) EASY")
-print("\t(2) HARD")
+print("  (1) EASY")
+print("  (2) HARD")
 
 mode = input(">> ")
 while(mode != '1' and mode != '2'):
-    print("CHOOSE 1 OR 2")
-    mode = input(">> ")
+	print("CHOOSE 1 OR 2")
+	mode = input(">> ")
 
 
 northWords = ["north", "up", "orth", "nrth", "noth", "norh", "nort", "onrth"]
@@ -44,7 +44,7 @@ player = dict["Player"]
 Spot.setPlayer(player)
 Spot.setCur(cur)
 if(mode == "1"):
-    GameMap.printMap(map)
+	GameMap.printMap(map)
 
 Spot.getCur().validMoves()
 dir = input("Where would you like to go? >> ")
@@ -88,6 +88,4 @@ if(dir.lower() == "quit"):
 elif(remaining == 0):
 	player.lose()
 else:
-	print("YOU LOSE")
-
-time.sleep(2)
+	player.lose()

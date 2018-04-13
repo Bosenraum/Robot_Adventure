@@ -100,7 +100,7 @@ class Spot:
 				print("DIFFICULT DIFFICULT LEMON DIFFICULT")
 
 			while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
-				time.sleep(1)
+				time.sleep(0.5)
 				choice = input("Attack or Flee? >> ")
 				print()
 				if(choice.lower() in ["attack", "a"]):
@@ -110,7 +110,7 @@ class Spot:
 						print("ENEMY DEFEATED\n")
 						break
 
-					time.sleep(1)
+					time.sleep(0.5)
 					self.enemy.attack(Spot.player)
 					Spot.checkLose()
 
@@ -385,6 +385,10 @@ class Spot:
 
 	def haveFun(self):
 		if(self.funType == FunType.RIDDLE):
+			Sounds.fadeSound(SoundEffect.THEME)
+			time.sleep(1)
+			Sounds.playSound(SoundEffect.SPHINX)
+			time.sleep(6.5)
 			soundType = SoundEffect.WRONG
 			print(f"HELLO {Spot.player.getName()}")
 			print("ANSWER THIS RIDDLE IF YOU WISH TO LIVE")
@@ -396,6 +400,7 @@ class Spot:
 				print("INCORRECT")
 				Spot.player.loseHealth(50)
 				if(Spot.player.getHealth() <= 0):
+					Sounds.fadeSound(SoundEffect.SPHINX)
 					print("YOU MUST DIE..")
 					for i in range(3):
 						print("."*(i+1))
@@ -406,9 +411,25 @@ class Spot:
 				answer = input(">> ")
 				print()
 			print("*SPHINX DIES*")
+			Sounds.fadeSound(SoundEffect.SPHINX)
+			time.sleep(3)
+			Sounds.playSound(SoundEffect.THEME)
 		elif(self.funType == FunType.PUZZLE):
 			print("SOLVE A PUZZLE")
-			time.sleep(2)
+			Sounds.fadeSound(SoundEffect.THEME)
+			time.sleep(1)
+			Sounds.playSound(SoundEffect.TWINKLE)
+			time.sleep(5)
+			Sounds.stopSound(SoundEffect.TWINKLE)
+			while(input("Name the song >> ").lower() != "twinkle"):
+				print("WRONG ANSWER. TURN YOU EARS ON!")
+				time.sleep(1)
+				Sounds.playSound(SoundEffect.TWINKLE)
+				time.sleep(5)
+				Sounds.stopSound(SoundEffect.TWINKLE)
+			print(f"{Spot.player.getName()} YOU'RE MUSICAL INTUITION IS UNMATCHED")
+			Sounds.playSound(SoundEffect.THEME)
+			time.sleep(1)
 		else:
 			print("FIGHT A BOSS")
 			Sounds.fadeSound(SoundEffect.THEME)
