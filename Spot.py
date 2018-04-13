@@ -418,4 +418,4 @@ class Spot:
 				time.sleep(1)
 			Sounds.fadeSound(SoundEffect.BOSS)
 			time.sleep(1)
-			Sounds.startSound(SoundEffect.THEME)
+			Sounds.playSound(SoundEffect.THEME)
