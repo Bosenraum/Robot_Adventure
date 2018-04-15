@@ -70,7 +70,6 @@ class Spot:
 	def enter(self):
 		print()
 		self.entered = True
-		flee = False
 		# Perform type specific action
 		# Give description of spot
 		if(self.type == SpotType.END):
@@ -78,7 +77,6 @@ class Spot:
 		elif(self.type == SpotType.CHARGE):
 			# Refill hp
 			Spot.player.heal()
-
 
 		elif(self.type == SpotType.COFFEE):
 			print("THE BITTER TASTE OF COFFEE FILLS YOU WITH DETERMINATION")
@@ -91,45 +89,7 @@ class Spot:
 			else:
 				print(f"YOU MUST GO {nextDir.upper()} FROM HERE TO REACH THE END\n")
 		elif(self.type == SpotType.FIGHT):
-			print("FIGHT!")
-			if(self.enemy.getType() == EnemyType.EASY):
-				print("EASY PEASY")
-			elif(self.enemy.getType() == EnemyType.MEDIUM):
-				print("MEDIUM SQUEEZY")
-			else:
-				print("DIFFICULT DIFFICULT LEMON DIFFICULT")
-
-			while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
-				time.sleep(0.5)
-				choice = input("Attack or Flee? >> ")
-				print()
-				if(choice.lower() in ["attack", "a"]):
-
-					Spot.player.attack(self.enemy)
-					if(self.enemy.getHealth() <= 0):
-						print("ENEMY DEFEATED\n")
-						break
-
-					time.sleep(0.5)
-					self.enemy.attack(Spot.player)
-					Spot.checkLose()
-
-				elif(choice.lower() in ["flee", "f"]):
-					flee = True
-					break
-				elif(choice.lower() in ["status", "s"]):
-					Spot.player.getStatus()
-					self.enemy.getStatus()
-				else:
-					print("INVALID MOVE")
-					self.enemy.attack(Spot.player)
-					Spot.checkLose()
-
-			if(not flee):
-				self.enemy = None
-				self.type = SpotType.EMPTY
-			else:
-				self.flee()
+			self.fight()
 
 		# Need multiple fun spots
 		elif(self.type == SpotType.FUN):
@@ -383,6 +343,48 @@ class Spot:
 		else:
 			print("     ", end="")
 
+	def fight(self):
+		print("FIGHT!")
+		flee = False
+		if(self.enemy.getType() == EnemyType.EASY):
+			print("EASY PEASY")
+		elif(self.enemy.getType() == EnemyType.MEDIUM):
+			print("MEDIUM SQUEEZY")
+		else:
+			print("DIFFICULT DIFFICULT LEMON DIFFICULT")
+
+		while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
+			time.sleep(0.5)
+			choice = input("ATTACK OR FLEE? >> ")
+			print()
+			if(choice.lower() in ["attack", "a"]):
+
+				Spot.player.attack(self.enemy)
+				if(self.enemy.getHealth() <= 0):
+					print("ENEMY DEFEATED\n")
+					break
+
+				time.sleep(0.5)
+				self.enemy.attack(Spot.player)
+				Spot.checkLose()
+
+			elif(choice.lower() in ["flee", "f"]):
+				flee = True
+				break
+			elif(choice.lower() in ["status", "s"]):
+				Spot.player.getStatus()
+				self.enemy.getStatus()
+			else:
+				print("INVALID MOVE")
+				self.enemy.attack(Spot.player)
+				Spot.checkLose()
+
+		if(not flee):
+			self.enemy = None
+			self.type = SpotType.EMPTY
+		else:
+			self.flee()
+
 	def haveFun(self):
 		if(self.funType == FunType.RIDDLE):
 			Sounds.fadeSound(SoundEffect.THEME)
@@ -414,14 +416,15 @@ class Spot:
 			Sounds.fadeSound(SoundEffect.SPHINX)
 			time.sleep(3)
 			Sounds.playSound(SoundEffect.THEME)
+
 		elif(self.funType == FunType.PUZZLE):
-			print("SOLVE A PUZZLE")
+			print("NAME THIS SONG TO CONTINUE")
 			Sounds.fadeSound(SoundEffect.THEME)
 			time.sleep(1)
 			Sounds.playSound(SoundEffect.TWINKLE)
 			time.sleep(5)
 			Sounds.stopSound(SoundEffect.TWINKLE)
-			while(input("Name the song >> ").lower() != "twinkle"):
+			while(input("NAME THAT SONG (PRESS R TO REPLAY) >> ").lower() != "twinkle"):
 				print("WRONG ANSWER. TURN YOU EARS ON!")
 				time.sleep(1)
 				Sounds.playSound(SoundEffect.TWINKLE)
@@ -430,13 +433,52 @@ class Spot:
 			print(f"{Spot.player.getName()} YOU'RE MUSICAL INTUITION IS UNMATCHED")
 			Sounds.playSound(SoundEffect.THEME)
 			time.sleep(1)
+
 		else:
-			print("FIGHT A BOSS")
+			print("IT'S THE WIZARD BABY!")
 			Sounds.fadeSound(SoundEffect.THEME)
 			time.sleep(1)
 			Sounds.playSound(SoundEffect.BOSS)
-			while(input(">> ").lower() != "done"):
-				time.sleep(1)
+
+			while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
+				time.sleep(0.5)
+				choice = input("ATTACK (WEAK OR STRONG) >> ")
+				print()
+				if(choice.lower() in ["attack", "a", "weak", "w", "weak attack"]):
+
+					Spot.player.attack(self.enemy)
+					if(self.enemy.getHealth() <= 0):
+						print("BOSS BABY VANQUISHED!\n")
+						break
+
+					time.sleep(0.5)
+					self.enemy.attack(Spot.player)
+					Spot.checkLose()
+
+				elif(choice.lower() in ["strong", "strong attack"]):
+					if(random.choice(range(0, 10)) <= 7):
+						Spot.player.strongAttack(self.enemy)
+					else:
+						print("ATTACK MISSED!")
+					if(self.enemy.getHealth() <= 0):
+						print("BOSS BABY VANQUISHED!\n")
+						break
+
+					time.sleep(0.5)
+					self.enemy.attack(Spot.player)
+					Spot.checkLose()
+
+				elif(choice.lower() in ["flee", "f"]):
+					flee = True
+					break
+				elif(choice.lower() in ["status", "s"]):
+					Spot.player.getStatus()
+					self.enemy.getStatus()
+				else:
+					print("INVALID MOVE")
+					self.enemy.attack(Spot.player)
+					Spot.checkLose()
+
 			Sounds.fadeSound(SoundEffect.BOSS)
 			time.sleep(1)
 			Sounds.playSound(SoundEffect.THEME)

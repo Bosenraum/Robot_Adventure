@@ -47,7 +47,7 @@ if(mode == "1"):
 	GameMap.printMap(map)
 
 Spot.getCur().validMoves()
-dir = input("Where would you like to go? >> ")
+dir = input("WHERE WOULD YOU LIKE TO GO? >> ")
 while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 	printMap = True
 	if(dir.lower() in northWords):
@@ -80,11 +80,12 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 	elif(remaining <= 5):
 		print(f"{remaining} MOVES LEFT")
 	Spot.getCur().validMoves()
-	dir = input("Where would you like to go? >> ")
+	dir = input("WHERE WOULD YOU LIKE TO GO? >> ")
 
 remaining = player.getRemaining()
 if(dir.lower() == "quit"):
 	print("QUITTER!")
+	player.lose()
 elif(remaining == 0):
 	player.lose()
 else:

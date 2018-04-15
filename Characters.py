@@ -12,6 +12,7 @@ class EnemyType(Enum):
 	EASY   = 1
 	MEDIUM = 2
 	HARD   = 3
+	BOSS   = 4
 
 class Player:
 	maxHP = 200
@@ -47,12 +48,20 @@ class Player:
 
 	def attack(self, enemy):
 		damage = random.choice(range(self.damageMin, self.damageMax+1))
-		enemy.loseHealth(damage);
+		enemy.loseHealth(damage)
 
 		Sounds.playSound(SoundEffect.MEDIUM)
 
-		print(f"You attacked for {damage} damage -- ", end="")
-		print(f"Enemy has {enemy.getHealth()} HP remaining")
+		print(f"YOU ATTACKED FOR {damage} damage -- ", end="")
+		print(f"ENEMY HAS {enemy.getHealth()} HP REMAINING")
+
+	def strongAttack(self, enemy):
+		damage = 2*random.choice(range(self.damageMin, self.damageMax+1))
+		enemy.loseHealth(damage)
+		Sounds.playSound(SoundEffect.HARD)
+
+		print(f"YOU ATTACKED FOR {damage} damage -- ", end="")
+		print(f"ENEMY HAS {enemy.getHealth()} HP REMAINING")
 
 	def heal(self):
 		self.hp = Player.maxHP
@@ -89,7 +98,7 @@ class Player:
 		if(self.cheated):
 			print("HOW COULD YOU CHEAT AND STILL LOSE?!")
 		else:
-			print("YOU LOSE")
+			print("GAME OVER")
 		Sounds.fadeSound(SoundEffect.THEME)
 		time.sleep(1)
 		Sounds.playSound(SoundEffect.LOSE)
@@ -111,9 +120,12 @@ class Enemy:
 		elif(type == EnemyType.MEDIUM):
 			self.hp = 75
 			self.strength = 2
-		else:
+		elif(type == EnemyType.HARD):
 			self.hp = 100
 			self.strength = 3
+		else:
+			self.hp = 200
+			self.strength = 2
 
 	def getType(self):
 		return self.type
@@ -126,7 +138,7 @@ class Enemy:
 
 	# return a random value based on the strength of the enemy
 	def attack(self, player):
-		if(self.type == EnemyType.HARD):
+		if(self.type == EnemyType.HARD or self.type == EnemyType.BOSS):
 			soundType = SoundEffect.HARD
 		elif(self.type == EnemyType.MEDIUM):
 			soundType = SoundEffect.MEDIUM

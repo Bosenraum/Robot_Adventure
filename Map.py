@@ -170,9 +170,12 @@ class GameMap:
 		spot.setFunType(FunType.PUZZLE)
 
 		# place boss
+		boss = Enemy(EnemyType.BOSS)
 		spot = GameMap.getOpenSpot()
 		while(spot.checkNeighbors(SpotType.FUN)):
 			spot = GameMap.getOpenSpot()
+
+		spot.setEnemy(boss)
 		spot.setType(SpotType.FUN)
 		spot.setFunType(FunType.BOSS)
 
