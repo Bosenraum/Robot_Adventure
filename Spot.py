@@ -1,5 +1,6 @@
 # Create map spots
-from enum import Enum
+# from enum import Enum
+from Enumerations import *
 from Characters import EnemyType, Player
 from Music import *
 import random
@@ -7,27 +8,6 @@ import time
 #from pygame import mixer
 
 Sounds.init()
-
-# Enumerate directions for later
-class Directions(Enum):
-	NORTH = 1
-	EAST  = 2
-	SOUTH = 3
-	WEST  = 4
-
-class SpotType(Enum):
-	CHARGE = 1
-	COFFEE = 2
-	FIGHT  = 3
-	FUN	= 4
-	EMPTY  = 5
-	START  = 6
-	END	= 7
-
-class FunType(Enum):
-	RIDDLE = 1 # Sphinx riddle
-	PUZZLE = 2 # A basic puzzle
-	BOSS   = 3 # Fight a strong enemy that you can't flee from
 
 class Spot:
 	player = None
@@ -82,6 +62,10 @@ class Spot:
 			print("THE BITTER TASTE OF COFFEE FILLS YOU WITH DETERMINATION")
 			# Need to clear the visited label for all spots before searching
 			nextDir = self.DFS()
+			print(nextDir)
+
+			# convert this cardinal direction to a relative one based on the player's orientation
+			nextDir = Spot.player.getRelativeDir(nextDir)
 			if(nextDir == None):
 				print("ERROR: NO END FOUND")
 			elif(nextDir == "error"):
@@ -244,13 +228,13 @@ class Spot:
 	def validMoves(self):
 		dirs = []
 		if(self.north):
-			dirs.append("NORTH")
+			dirs.append(Spot.player.getRelativeDir("north").upper())
 		if(self.east):
-			dirs.append("EAST")
+			dirs.append(Spot.player.getRelativeDir("east").upper())
 		if(self.south):
-			dirs.append("SOUTH")
+			dirs.append(Spot.player.getRelativeDir("south").upper())
 		if(self.west):
-			dirs.append("WEST")
+			dirs.append(Spot.player.getRelativeDir("west").upper())
 
 		if(len(dirs) == 1):
 			output = "THERE IS A PATH LEADING " + dirs[0]
@@ -436,6 +420,7 @@ class Spot:
 
 		else:
 			print("IT'S THE WIZARD BABY!")
+			fleeCount = 0
 			Sounds.fadeSound(SoundEffect.THEME)
 			time.sleep(1)
 			Sounds.playSound(SoundEffect.BOSS)
@@ -469,8 +454,12 @@ class Spot:
 					Spot.checkLose()
 
 				elif(choice.lower() in ["flee", "f"]):
-					flee = True
-					break
+					print("CAN'T FLEE THIS FIGHT!")
+					if(fleeCount >= 1):
+						time.sleep(0.5)
+						self.enemy.attack(Spot.player)
+						Spot.checkLose()
+					fleeCount += 1
 				elif(choice.lower() in ["status", "s"]):
 					Spot.player.getStatus()
 					self.enemy.getStatus()

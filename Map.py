@@ -1,8 +1,7 @@
 from Spot import *
 from Characters import *
+from Enumerations import *
 import random
-
-
 
 class GameMap:
 	map = []

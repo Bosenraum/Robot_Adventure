@@ -2,17 +2,12 @@
 # Create player character'
 
 from Music import *
-from enum import Enum
+from Enumerations import *
+# from numpy import roll
 import random, time
 #from pygame import mixer
 
 Sounds.init()
-
-class EnemyType(Enum):
-	EASY   = 1
-	MEDIUM = 2
-	HARD   = 3
-	BOSS   = 4
 
 class Player:
 	maxHP = 200
@@ -33,6 +28,7 @@ class Player:
 			self.cheated = True
 
 		self.movesTaken = 0
+		self.orientation = [Directions.NORTH, Directions.EAST, Directions.SOUTH, Directions.WEST]
 
 	def getName(self):
 		return self.name
@@ -42,6 +38,44 @@ class Player:
 
 	def getMovesTaken(self):
 		return self.movesTaken
+
+	def getOrientation(self):
+		return self.orientation
+
+	# update directions based on current robot orientation
+	def turnRight(self):
+		self.orientation.append(self.orientation.pop(0))
+
+	def turnLeft(self):
+		for i in range(3):
+			self.turnRight()
+
+	def getRelativeDir(self, cardinalDir):
+		i = -1
+
+		# Reverse map cardinal directions to orientation
+		if(cardinalDir == "north"):
+			i = self.orientation.index(Directions.NORTH)
+		elif(cardinalDir == "east"):
+			i = self.orientation.index(Directions.EAST)
+		elif(cardinalDir == "south"):
+			i = self.orientation.index(Directions.SOUTH)
+		elif(cardinalDir == "west"):
+			i = self.orientation.index(Directions.WEST)
+
+		if(i == 0):
+			relativeDir = "forward"
+		elif(i == 1):
+			relativeDir = "right"
+		elif(i == 2):
+			relativeDir = "backward"
+		elif(i == 3):
+			relativeDir = "left"
+		else:
+			relatvieDir = "error"
+
+		return relativeDir
+
 
 	def loseHealth(self, val):
 		self.hp -= val
