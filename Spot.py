@@ -425,7 +425,7 @@ class Spot:
 			time.sleep(5)
 			Sounds.stopSound(SoundEffect.TWINKLE)
 			while(input("NAME THAT SONG (PRESS R TO REPLAY) >> ").lower() != "twinkle"):
-				print("WRONG ANSWER. TURN YOU EARS ON!")
+				print("WRONG ANSWER. TURN YOUR EARS ON!")
 				time.sleep(1)
 				Sounds.playSound(SoundEffect.TWINKLE)
 				time.sleep(5)
