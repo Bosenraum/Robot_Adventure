@@ -1,5 +1,6 @@
 # Create map spots
-from enum import Enum
+# from enum import Enum
+from Enumerations import *
 from Characters import EnemyType, Player
 from Music import *
 import random
@@ -7,27 +8,6 @@ import time
 #from pygame import mixer
 
 Sounds.init()
-
-# Enumerate directions for later
-class Directions(Enum):
-	NORTH = 1
-	EAST  = 2
-	SOUTH = 3
-	WEST  = 4
-
-class SpotType(Enum):
-	CHARGE = 1
-	COFFEE = 2
-	FIGHT  = 3
-	FUN	= 4
-	EMPTY  = 5
-	START  = 6
-	END	= 7
-
-class FunType(Enum):
-	RIDDLE = 1 # Sphinx riddle
-	PUZZLE = 2 # A basic puzzle
-	BOSS   = 3 # Fight a strong enemy that you can't flee from
 
 class Spot:
 	player = None

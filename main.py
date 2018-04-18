@@ -6,10 +6,23 @@
 from Spot import *
 from Music import *
 from Map import GameMap
+from Enumerations import *
+# from numpy import roll
 import threading, time
 # import pygame.mixer
 #from Characters import *
 #import random
+
+# orientation = [Directions.NORTH, Directions.EAST, Directions.SOUTH, Directions.WEST]
+#
+# # update directions based on current robot orientation
+# def turnRight():
+# 	global orientation
+# 	orientation = roll(orientation, -1)
+#
+# def turnLeft():
+# 	global orientation
+# 	orientation = roll(orientation, 1)
 
 Sounds.init()
 
@@ -26,10 +39,18 @@ while(mode != '1' and mode != '2'):
 	mode = input(">> ")
 
 
-northWords = ["north", "up", "orth", "nrth", "noth", "norh", "nort", "onrth"]
+
+northWords = ["north", "up", "orth", "nrth", "noth", "norh", "nort", "onrth", "forward", "forwards"]
 eastWords  = ["east", "right", "ast", "eat", "eas", "aest"]
-southWords = ["south", "down", "outh", "suth", "soth", "souh", "sout", "suoth", "osuth"]
+southWords = ["south", "down", "outh", "suth", "soth", "souh", "sout", "suoth", "osuth", "backward", "backwards"]
 westWords  = ["west", "left", "wst", "wet", "wes", "ewst"]
+
+forwardList = ["forward", "forwards", "up"]
+rightList   = ["right"]
+leftList    = ["left"]
+backList	= ["back", "backward", "backwards", "down"]
+
+
 
 movesAllowed = Player.maxMoves
 
@@ -50,14 +71,24 @@ Spot.getCur().validMoves()
 dir = input("WHERE WOULD YOU LIKE TO GO? >> ")
 while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 	printMap = True
-	if(dir.lower() in northWords):
-		Spot.getCur().move(Directions.NORTH)
-	elif(dir.lower() in eastWords):
-		Spot.getCur().move(Directions.EAST)
-	elif(dir.lower() in southWords):
-		Spot.getCur().move(Directions.SOUTH)
-	elif(dir.lower() in westWords):
-		Spot.getCur().move(Directions.WEST)
+	cur = Spot.getCur()
+	if(dir.lower() in forwardList):
+		# Spot.getCur().move(Directions.NORTH)
+		cur.move(player.getOrientation()[0])
+	elif(dir.lower() in rightList):
+		# Spot.getCur().move(Directions.EAST)
+		cur.move(player.getOrientation()[1])
+		# Rotate the orientation list
+		player.turnRight()
+	elif(dir.lower() in backList):
+		# Spot.getCur().move(Directions.SOUTH)
+		cur.move(player.getOrientation()[2])
+		player.turnRight()
+		player.turnRight()
+	elif(dir.lower() in leftList):
+		# Spot.getCur().move(Directions.WEST)
+		cur.move(player.getOrientation()[3])
+		player.turnLeft()
 	elif(dir.lower() == "status"):
 		player.getStatus()
 	elif(dir.lower() == "skip"):

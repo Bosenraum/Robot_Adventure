@@ -1,19 +1,7 @@
 from pygame import mixer
-from enum import Enum
+from Enumerations import *
 
 mixer.init()
-
-class SoundEffect(Enum):
-	THEME   = 1
-	BOSS	= 2
-	WEAK	= 3
-	MEDIUM  = 4
-	HARD	= 5
-	LOSE	= 6
-	WIN	    = 7
-	WRONG   = 8
-	TWINKLE = 9
-	SPHINX  = 10
 
 class Sounds:
 	# create static class variables for necessary sounds
