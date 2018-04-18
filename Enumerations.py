@@ -11,10 +11,10 @@ class SpotType(Enum):
 	CHARGE = 1
 	COFFEE = 2
 	FIGHT  = 3
-	FUN	= 4
+	FUN	   = 4
 	EMPTY  = 5
 	START  = 6
-	END	= 7
+	END	   = 7
 
 class FunType(Enum):
 	RIDDLE = 1 # Sphinx riddle

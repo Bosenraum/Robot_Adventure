@@ -13,17 +13,6 @@ import threading, time
 #from Characters import *
 #import random
 
-# orientation = [Directions.NORTH, Directions.EAST, Directions.SOUTH, Directions.WEST]
-#
-# # update directions based on current robot orientation
-# def turnRight():
-# 	global orientation
-# 	orientation = roll(orientation, -1)
-#
-# def turnLeft():
-# 	global orientation
-# 	orientation = roll(orientation, 1)
-
 Sounds.init()
 
 Sounds.playSound(SoundEffect.THEME)
@@ -45,10 +34,10 @@ eastWords  = ["east", "right", "ast", "eat", "eas", "aest"]
 southWords = ["south", "down", "outh", "suth", "soth", "souh", "sout", "suoth", "osuth", "backward", "backwards"]
 westWords  = ["west", "left", "wst", "wet", "wes", "ewst"]
 
-forwardList = ["forward", "forwards", "up"]
-rightList   = ["right"]
-leftList    = ["left"]
-backList	= ["back", "backward", "backwards", "down"]
+forwardList = ["forward", "forwards", "up", "f", "u"]
+rightList   = ["right", "r"]
+leftList    = ["left", "l"]
+backList	= ["back", "backward", "backwards", "down", "b", "d"]
 
 
 

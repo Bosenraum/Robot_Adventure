@@ -3,13 +3,11 @@
 
 from Music import *
 from Enumerations import *
-from numpy import roll
+# from numpy import roll
 import random, time
 #from pygame import mixer
 
 Sounds.init()
-
-
 
 class Player:
 	maxHP = 200
@@ -46,10 +44,38 @@ class Player:
 
 	# update directions based on current robot orientation
 	def turnRight(self):
-		self.orientation = roll(self.orientation, -1)
+		self.orientation.append(self.orientation.pop(0))
 
 	def turnLeft(self):
-		self.orientation = roll(self.orientation, 1)
+		for i in range(3):
+			self.turnRight()
+
+	def getRelativeDir(self, cardinalDir):
+		i = -1
+
+		# Reverse map cardinal directions to orientation
+		if(cardinalDir == "north"):
+			i = self.orientation.index(Directions.NORTH)
+		elif(cardinalDir == "east"):
+			i = self.orientation.index(Directions.EAST)
+		elif(cardinalDir == "south"):
+			i = self.orientation.index(Directions.SOUTH)
+		elif(cardinalDir == "west"):
+			i = self.orientation.index(Directions.WEST)
+
+		if(i == 0):
+			relativeDir = "forward"
+		elif(i == 1):
+			relativeDir = "right"
+		elif(i == 2):
+			relativeDir = "backward"
+		elif(i == 3):
+			relativeDir = "left"
+		else:
+			relatvieDir = "error"
+
+		return relativeDir
+
 
 	def loseHealth(self, val):
 		self.hp -= val
