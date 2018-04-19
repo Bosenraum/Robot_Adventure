@@ -71,7 +71,8 @@ class Spot:
 			elif(nextDir == "error"):
 				print("ERROR: ERROR WAS RETURNED")
 			else:
-				print(f"YOU MUST GO {nextDir.upper()} FROM HERE TO REACH THE END\n")
+				#print(f"YOU MUST GO {nextDir.upper()} FROM HERE TO REACH THE END\n")
+				print("YOU MUST GO %s FROM HERE TO REACH THE END\n" % nextDir.upper())
 		elif(self.type == SpotType.FIGHT):
 			self.fight()
 
@@ -376,7 +377,8 @@ class Spot:
 			Sounds.playSound(SoundEffect.SPHINX)
 			time.sleep(6.5)
 			soundType = SoundEffect.WRONG
-			print(f"HELLO {Spot.player.getName()}")
+			#print(f"HELLO {Spot.player.getName()}")
+			print("HELLO %s" % Spot.player.getName())
 			print("ANSWER THIS RIDDLE IF YOU WISH TO LIVE")
 			print("WHAT IS THE CREATURE THAT WALKS ON FOUR LEGS IN THE MORNING,\nTWO LEGS AT NOON,\nAND THREE LEGS IN THE EVENING?\n")
 			answer = input(">> ")
@@ -393,7 +395,8 @@ class Spot:
 						time.sleep(1)
 					print("YOU HAVE DIED")
 					Spot.player.lose()
-				print(f"{Spot.player.getHealth()} HP remaining")
+				#print(f"{Spot.player.getHealth()} HP remaining")
+				print("%s HP remaining" % Spot.player.getHealth())
 				answer = input(">> ")
 				print()
 			print("*SPHINX DIES*")
@@ -414,7 +417,8 @@ class Spot:
 				Sounds.playSound(SoundEffect.TWINKLE)
 				time.sleep(5)
 				Sounds.stopSound(SoundEffect.TWINKLE)
-			print(f"{Spot.player.getName()} YOU'RE MUSICAL INTUITION IS UNMATCHED")
+			#print(f"{Spot.player.getName()} YOU'RE MUSICAL INTUITION IS UNMATCHED")
+			print("%s YOU'RE MUSICAL INTUITION IS UNMATCHED" % Spot.player.getName())
 			Sounds.playSound(SoundEffect.THEME)
 			time.sleep(1)
 

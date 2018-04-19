@@ -86,25 +86,32 @@ class Player:
 
 		Sounds.playSound(SoundEffect.MEDIUM)
 
-		print(f"YOU ATTACKED FOR {damage} damage -- ", end="")
-		print(f"ENEMY HAS {enemy.getHealth()} HP REMAINING")
+		#print(f"YOU ATTACKED FOR {damage} damage -- ", end="")
+		print("YOU ATTACKED FOR %d damage -- " % damage, end="")
+		#print(f"ENEMY HAS {enemy.getHealth()} HP REMAINING")
+		print("ENEMY HAS %d HP REMAINING" % enemy.getHealth())
 
 	def strongAttack(self, enemy):
 		damage = 2*random.choice(range(self.damageMin, self.damageMax+1))
 		enemy.loseHealth(damage)
 		Sounds.playSound(SoundEffect.HARD)
 
-		print(f"YOU ATTACKED FOR {damage} damage -- ", end="")
-		print(f"ENEMY HAS {enemy.getHealth()} HP REMAINING")
+		#print(f"YOU ATTACKED FOR {damage} damage -- ", end="")
+		print("YOU ATTACKED FOR %d damage -- " % damage, end="")
+		#print(f"ENEMY HAS {enemy.getHealth()} HP REMAINING")
+		print("ENEMY HAS %d HP REMAINING" % enemy.getHealth())
 
 	def heal(self):
 		self.hp = Player.maxHP
 		print("HP REFILLED")
-		print(f"{self.name.upper()}'s HP: {self.hp}")
+		#print(f"{self.name.upper()}'s HP: {self.hp}")
+		print("%s's HP: %d" % (self.name.upper(), self.hp))
 
 	def getStatus(self):
-		print(f"{self.getRemaining()} MOVES REMAINING")
-		print(f"{self.name.upper()}'s HP: {self.hp}")
+		#print(f"{self.getRemaining()} MOVES REMAINING")
+		print("%d MOVES REMAINING" % self.getRemaining())
+		#print(f"{self.name.upper()}'s HP: {self.hp}")
+		print("%s's HP: %d" % (self.name.upper(), self.hp))
 
 	def getRemaining(self):
 		return Player.maxMoves - self.movesTaken
@@ -182,10 +189,13 @@ class Enemy:
 		damage = self.strength * (random.choice(range(self.damageMin, self.damageMax)))
 		player.loseHealth(damage)
 
-		print(f"Enemy attacked for {damage} damage -- ", end="")
-		print(f"You have {player.getHealth()} HP remaining")
+		#print(f"Enemy attacked for {damage} damage -- ", end="")
+		print("Enemy attacked for %d damage -- " % damage, end="")
+		#print(f"You have {player.getHealth()} HP remaining")
+		print("You have %d HP remaining" % player.getHealth())
 
 		Sounds.playSound(soundType)
 
 	def getStatus(self):
-		print(f"ENEMY HP: {self.hp}")
+		#print(f"ENEMY HP: {self.hp}")
+		print("ENEMY HP: %d" % self.hp)

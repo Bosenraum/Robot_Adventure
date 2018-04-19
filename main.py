@@ -98,7 +98,8 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 	elif(remaining == 0):
 		break
 	elif(remaining <= 5):
-		print(f"{remaining} MOVES LEFT")
+		#print(f"{remaining} MOVES LEFT")	doesn't work in python 3.4
+		print("%d MOVES LEFT" % remaining)
 	Spot.getCur().validMoves()
 	dir = input("WHERE WOULD YOU LIKE TO GO? >> ")
 
