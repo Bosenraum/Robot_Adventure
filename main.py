@@ -7,6 +7,7 @@ from Spot import *
 from Music import *
 from Map import GameMap
 from Enumerations import *
+from Instruction import *
 # from numpy import roll
 import threading, time
 # import pygame.mixer
@@ -62,19 +63,26 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 	printMap = True
 	cur = Spot.getCur()
 	if(dir.lower() in forwardList):
+		forward.execute()
 		# Spot.getCur().move(Directions.NORTH)
 		cur.move(player.getOrientation()[0])
 	elif(dir.lower() in rightList):
+		turnRight.execute()
+		forward.execute()
 		# Spot.getCur().move(Directions.EAST)
 		cur.move(player.getOrientation()[1])
 		# Rotate the orientation list
 		player.turnRight()
 	elif(dir.lower() in backList):
+		turnAround.execute()
+		forward.execute()
 		# Spot.getCur().move(Directions.SOUTH)
 		cur.move(player.getOrientation()[2])
 		player.turnRight()
 		player.turnRight()
 	elif(dir.lower() in leftList):
+		turnLeft.execute()
+		forward.execute()
 		# Spot.getCur().move(Directions.WEST)
 		cur.move(player.getOrientation()[3])
 		player.turnLeft()

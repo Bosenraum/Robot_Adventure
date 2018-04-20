@@ -16,14 +16,14 @@ MAX    = 9000
 
 c0.setTarget(BODY, MID)
 
-Setting restrictions for all servos
+# Setting restrictions for all servos
 c0.setRange(HEAD_TILT, MIN, MAX)
 c0.setRange(HEAD_TURN, MIN, MAX)
 c0.setRange(BODY, MIN, MAX)
 c0.setRange(FORWARD_BACK, MIN, MAX)
 c0.setRange(LEFT_RIGHT, MIN, MAX)
 
-Setting speeds for all servos
+# Setting speeds for all servos
 c0.setSpeed(HEAD_TILT, 60)
 c0.setSpeed(HEAD_TURN, 60)
 c0.setSpeed(LEFT_RIGHT, 60)
@@ -48,7 +48,7 @@ class Motor:
     def execute(self):
         c0.setTarget(FORWARD_BACK, 6000 + (self.forward_back * self.forward_back_target))
         c0.setTarget(LEFT_RIGHT, 6000 + (self.left_right * self.left_right_target))
-        # print("Executing Motor Movement")
+        print("Executing Motor Movement")
         time.sleep(self.delay)
 
         c0.setTarget(FORWARD_BACK, 6000)
@@ -84,3 +84,8 @@ class Wait:
     def execute(self):
         print("Executing Wait" + str(self.delay))
         time.sleep(self.delay)
+
+turnRight = Motor(forward_back=0, left_right=-1, delay=1, forward_back_target=0, left_right_target=1100)
+turnLeft = Motor(forward_back=0, left_right=1, delay=1, forward_back_target=0, left_right_target=1100)
+forward = Motor(forward_back=-1, left_right=0, delay=1, forward_back_target=1100, left_right_target=0)
+turnAround = Motor(forward_back=0, left_right=-1, delay=2, forward_back_target=0, left_right_target=1100)
