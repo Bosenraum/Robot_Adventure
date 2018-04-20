@@ -64,7 +64,7 @@ class Spot:
 			Sounds.playSound(SoundEffect.COFFEE)
 			print("THE BITTER TASTE OF COFFEE FILLS YOU WITH DETERMINATION")
 			# Need to clear the visited label for all spots before searching
-			
+
 		elif(self.type == SpotType.FIGHT):
 			self.fight()
 
@@ -285,7 +285,15 @@ class Spot:
 
 	def printRow(self):
 		if(self.entered):
-			print("XX", end="")
+			if(Spot.player.getOrientation()[0] == Directions.NORTH):
+				print("/\\", end="")
+			elif(Spot.player.getOrientation()[0] == Directions.EAST):
+				print(">>", end="")
+			elif(Spot.player.getOrientation()[0] == Directions.SOUTH):
+				print("\\/", end="")
+			elif(Spot.player.getOrientation()[0] == Directions.WEST):
+				print("<<", end="")
+			# print("XX", end="")
 		elif(self.type == SpotType.START):
 			print("SS", end="")
 		elif(self.type == SpotType.END):

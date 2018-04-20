@@ -91,7 +91,7 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 	cur = Spot.getCur()
 	if(cur.getType() == SpotType.COFFEE):
 		nextDir = cur.DFS()
-		print(nextDir)
+		#print(nextDir)
 
 		# convert this cardinal direction to a relative one based on the player's orientation
 		nextDir = player.getRelativeDir(nextDir)
