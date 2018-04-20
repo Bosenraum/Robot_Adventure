@@ -17,6 +17,8 @@ class Sounds:
 	sphinx = None
 	coffee = None
 
+	playing = None
+
 	def __init__(self):
 		pass
 
@@ -35,11 +37,17 @@ class Sounds:
 		Sounds.coffee     = mixer.Sound("audio/coffee_shop.wav")
 
 	@staticmethod
+	def getPlaying():
+		return Sounds.playing
+
+	@staticmethod
 	def playSound(sound):
 		if(sound == SoundEffect.THEME):
 			Sounds.theme.play(loops=-1)
+			Sounds.playing = SoundEffect.THEME
 		elif(sound == SoundEffect.BOSS):
 			Sounds.boss.play(loops=-1)
+			Sounds.playing = SoundEffect.BOSS
 		elif(sound == SoundEffect.WEAK):
 			Sounds.weak_hit.play()
 		elif(sound == SoundEffect.MEDIUM):
@@ -56,8 +64,10 @@ class Sounds:
 			Sounds.twinkle.play()
 		elif(sound == SoundEffect.SPHINX):
 			Sounds.sphinx.play(loops=-1)
+			Sounds.playing = SoundEffect.SPHINX
 		elif(sound == SoundEffect.COFFEE):
 			Sounds.coffee.play(loops=-1)
+			Sounds.playing = SoundEffect.COFFEE
 
 
 	@staticmethod

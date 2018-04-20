@@ -129,7 +129,7 @@ class Player:
 			print("YOU WIN!!")
 		else:
 			print("CHEATERS NEVER WIN!")
-		Sounds.fadeSound(SoundEffect.THEME)
+		Sounds.fadeSound(Sounds.getPlaying())
 		time.sleep(1)
 		Sounds.playSound(SoundEffect.WIN)
 		time.sleep(2)
@@ -140,7 +140,7 @@ class Player:
 			print("HOW COULD YOU CHEAT AND STILL LOSE?!")
 		else:
 			print("GAME OVER")
-		Sounds.fadeSound(SoundEffect.THEME)
+		Sounds.fadeSound(Sounds.getPlaying())
 		time.sleep(1)
 		Sounds.playSound(SoundEffect.LOSE)
 		time.sleep(2)
