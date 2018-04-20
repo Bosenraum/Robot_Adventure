@@ -87,6 +87,21 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 	else:
 		print("INVALID DIRECTION")
 		printMap = False
+
+	cur = Spot.getCur()
+	if(cur.getType() == SpotType.COFFEE):
+		nextDir = cur.DFS()
+		print(nextDir)
+
+		# convert this cardinal direction to a relative one based on the player's orientation
+		nextDir = player.getRelativeDir(nextDir)
+		if(nextDir == None):
+			print("ERROR: NO END FOUND")
+		elif(nextDir == "error"):
+			print("ERROR: ERROR WAS RETURNED")
+		else:
+			print("YOU MUST GO %s FROM HERE TO REACH THE END\n" % nextDir.upper())
+
 	if(printMap and mode == "1"):
 		pass
 		GameMap.printMap(map)

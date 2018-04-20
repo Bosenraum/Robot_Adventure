@@ -15,6 +15,7 @@ class Sounds:
 	wrong_answer = None
 	twinkle = None
 	sphinx = None
+	coffee = None
 
 	def __init__(self):
 		pass
@@ -31,6 +32,7 @@ class Sounds:
 		Sounds.twinkle	  = mixer.Sound("audio/twinkle.wav")
 		Sounds.win        = mixer.Sound("audio/win.wav")
 		Sounds.sphinx     = mixer.Sound("audio/sphinx.wav")
+		Sounds.coffee     = mixer.Sound("audio/coffee_shop.wav")
 
 	@staticmethod
 	def playSound(sound):
@@ -54,6 +56,8 @@ class Sounds:
 			Sounds.twinkle.play()
 		elif(sound == SoundEffect.SPHINX):
 			Sounds.sphinx.play(loops=-1)
+		elif(sound == SoundEffect.COFFEE):
+			Sounds.coffee.play(loops=-1)
 
 
 	@staticmethod
@@ -78,6 +82,8 @@ class Sounds:
 			Sounds.twinkle.stop()
 		elif(sound == SoundEffect.SPHINX):
 			Sounds.sphinx.stop()
+		elif(sound == SoundEffect.COFFEE):
+			Sounds.coffee.stop()
 
 	@staticmethod
 	def fadeSound(sound):
@@ -99,3 +105,5 @@ class Sounds:
 			Sounds.win.fadeout(1000)
 		elif(sound == SoundEffect.SPHINX):
 			Sounds.sphinx.fadeout(3000)
+		elif(sound == SoundEffect.COFFEE):
+			Sounds.coffee.fadeout(1000)

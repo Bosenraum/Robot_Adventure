@@ -32,6 +32,7 @@ class SoundEffect(Enum):
 	WRONG   = 8
 	TWINKLE = 9
 	SPHINX  = 10
+	COFFEE  = 11
 
 class EnemyType(Enum):
 	EASY   = 1

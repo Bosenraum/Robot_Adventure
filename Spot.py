@@ -59,20 +59,12 @@ class Spot:
 			Spot.player.heal()
 
 		elif(self.type == SpotType.COFFEE):
+			Sounds.fadeSound(SoundEffect.THEME)
+			time.sleep(1)
+			Sounds.playSound(SoundEffect.COFFEE)
 			print("THE BITTER TASTE OF COFFEE FILLS YOU WITH DETERMINATION")
 			# Need to clear the visited label for all spots before searching
-			nextDir = self.DFS()
-			print(nextDir)
-
-			# convert this cardinal direction to a relative one based on the player's orientation
-			nextDir = Spot.player.getRelativeDir(nextDir)
-			if(nextDir == None):
-				print("ERROR: NO END FOUND")
-			elif(nextDir == "error"):
-				print("ERROR: ERROR WAS RETURNED")
-			else:
-				#print(f"YOU MUST GO {nextDir.upper()} FROM HERE TO REACH THE END\n")
-				print("YOU MUST GO %s FROM HERE TO REACH THE END\n" % nextDir.upper())
+			
 		elif(self.type == SpotType.FIGHT):
 			self.fight()
 
@@ -103,6 +95,10 @@ class Spot:
 
 	def leave(self):
 		self.entered = False
+		if(self.type == SpotType.COFFEE):
+			Sounds.fadeSound(SoundEffect.COFFEE)
+			time.sleep(1)
+			Sounds.playSound(SoundEffect.THEME)
 
 	def move(self, dir):
 		if(self.isValidDir(dir)):
@@ -228,6 +224,7 @@ class Spot:
 
 	def validMoves(self):
 		dirs = []
+		#Spot.player.clearTurnOffset()
 		if(self.north):
 			dirs.append(Spot.player.getRelativeDir("north").upper())
 		if(self.east):
