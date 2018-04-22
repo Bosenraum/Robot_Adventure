@@ -56,6 +56,8 @@ class Spot:
 		if(self.type == SpotType.END):
 			Spot.player.win()
 		elif(self.type == SpotType.CHARGE):
+			Sounds.playSound(SoundEffect.HEAL)
+			time.sleep(2)
 			# Refill hp
 			Spot.player.heal()
 

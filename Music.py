@@ -16,6 +16,7 @@ class Sounds:
 	twinkle = None
 	sphinx = None
 	coffee = None
+	heal = None
 
 	playing = None
 
@@ -35,6 +36,7 @@ class Sounds:
 		Sounds.win        = mixer.Sound("audio/win.wav")
 		Sounds.sphinx     = mixer.Sound("audio/sphinx.wav")
 		Sounds.coffee     = mixer.Sound("audio/coffee_shop.wav")
+		Sounds.heal       = mixer.Sound("audio/heal.wav")
 
 	@staticmethod
 	def getPlaying():
@@ -68,6 +70,8 @@ class Sounds:
 		elif(sound == SoundEffect.COFFEE):
 			Sounds.coffee.play(loops=-1)
 			Sounds.playing = SoundEffect.COFFEE
+		elif(sound == SoundEffect.HEAL):
+			Sounds.heal.play()
 
 
 	@staticmethod
@@ -94,6 +98,8 @@ class Sounds:
 			Sounds.sphinx.stop()
 		elif(sound == SoundEffect.COFFEE):
 			Sounds.coffee.stop()
+		elif(sound == SoundEffect.HEAL):
+			Sounds.heal.stop()
 
 	@staticmethod
 	def fadeSound(sound):
