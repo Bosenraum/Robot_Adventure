@@ -6,6 +6,7 @@ from Music import *
 # from Instruction import *
 import random
 import time
+from Network import *
 #from pygame import mixer
 
 Sounds.init()
@@ -248,6 +249,7 @@ class Spot:
 			output += "AND " + dirs[-1]
 
 		print(output)
+		createSendThread(output, 10, 10, "f")
 
 	# # DFS function to find next direction from coffee shop?
 	def DFS(self):
@@ -338,23 +340,29 @@ class Spot:
 
 	def fight(self):
 		print("FIGHT!")
+		createSendThread("FIGHT!", 10, 10, "f")
 		flee = False
 		if(self.enemy.getType() == EnemyType.EASY):
 			print("EASY PEASY")
+			createSendThread("EASY PEASY!", 10, 10, "f")
 		elif(self.enemy.getType() == EnemyType.MEDIUM):
 			print("MEDIUM SQUEEZY")
+			createSendThread("MEDIUM SQUEEZY", 10, 10, "f")
 		else:
 			print("DIFFICULT DIFFICULT LEMON DIFFICULT")
+			createSendThread("DIFFICULT DIFFICULT LEMON DIFFICULT", 10, 10, "f")
 
 		while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
 			time.sleep(0.5)
-			choice = input("ATTACK OR FLEE? >> ")
-			print()
+			createSendThread("ATTACK OAR FLEE?", 10, 10, "t")
+			choice = receive()
+			# print()
 			if(choice.lower() in ["attack", "a"]):
 
 				Spot.player.attack(self.enemy)
 				if(self.enemy.getHealth() <= 0):
 					print("ENEMY DEFEATED\n")
+					createSendThread("ENEMY DEFEATED!", 10, 10, "f")
 					break
 
 				time.sleep(0.5)

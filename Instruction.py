@@ -9,6 +9,20 @@ LEFT_RIGHT      = 2
 HEAD_TURN       = 3
 HEAD_TILT       = 4
 
+RIGHT_SHOULDER_UD = 6
+RIGHT_SHOULDER_LR = 7
+RIGHT_ELBOW = 8
+RIGHT_WRIST_UD = 9
+RIGHT_WRIST_ROTATE = 10
+RIGHT_HAND = 11
+
+LEFT_SHOULDER_UD = 12
+LEFT_SHOULDER_LR = 13
+LEFT_ELBOW = 14
+LEFT_WRIST_UD = 15
+LEFT_WRIST_ROTATE = 16
+LEFT_HAND = 17
+
 # Enumerate positions
 MIN    = 3000
 MID    = 6000
@@ -24,18 +38,23 @@ c0.setRange(FORWARD_BACK, MIN, MAX)
 c0.setRange(LEFT_RIGHT, MIN, MAX)
 
 # Setting speeds for all servos
-c0.setSpeed(HEAD_TILT, 60)
-c0.setSpeed(HEAD_TURN, 60)
-c0.setSpeed(LEFT_RIGHT, 60)
-c0.setSpeed(FORWARD_BACK, 60)
-c0.setSpeed(BODY, 60)
-
 # Setting accelerations for all servos
-c0.setAccel(HEAD_TILT, 30)
-c0.setAccel(HEAD_TURN, 30)
-c0.setAccel(BODY, 30)
-c0.setAccel(FORWARD_BACK, 30)
-c0.setAccel(LEFT_RIGHT, 30)
+for i in range(18):
+    c0.setSpeed(i, 60)
+    c0.setAccel(i, 30)
+# c0.setSpeed(HEAD_TILT, 60)
+# c0.setSpeed(HEAD_TURN, 60)
+# c0.setSpeed(LEFT_RIGHT, 60)
+# c0.setSpeed(FORWARD_BACK, 60)
+# c0.setSpeed(BODY, 60)
+
+
+
+# c0.setAccel(HEAD_TILT, 30)
+# c0.setAccel(HEAD_TURN, 30)
+# c0.setAccel(BODY, 30)
+# c0.setAccel(FORWARD_BACK, 30)
+# c0.setAccel(LEFT_RIGHT, 30)
 
 class Motor:
     def __init__(self, forward_back=0, left_right=0, delay=0, forward_back_target=0, left_right_target=0):

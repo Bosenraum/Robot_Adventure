@@ -5,6 +5,7 @@ from Music import *
 from Enumerations import *
 # from numpy import roll
 import random, time
+from Network import *
 #from pygame import mixer
 
 Sounds.init()
@@ -127,8 +128,10 @@ class Player:
 		# Play the win music
 		if(not self.cheated):
 			print("YOU WIN!!")
+			createSendThread("YOU WIN", 20, 10, "f")
 		else:
 			print("CHEATERS NEVER WIN!")
+			createSendThread("CHEATERS NEVER WIN!", 5, 10, "f")
 		Sounds.fadeSound(Sounds.getPlaying())
 		time.sleep(1)
 		Sounds.playSound(SoundEffect.WIN)
@@ -140,6 +143,7 @@ class Player:
 			print("HOW COULD YOU CHEAT AND STILL LOSE?!")
 		else:
 			print("GAME OVER")
+			createSendThread("GAME OVER", 1, 5, "f")
 		Sounds.fadeSound(Sounds.getPlaying())
 		time.sleep(1)
 		Sounds.playSound(SoundEffect.LOSE)

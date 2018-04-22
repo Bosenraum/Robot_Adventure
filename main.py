@@ -8,25 +8,24 @@ from Music import *
 from Map import GameMap
 from Enumerations import *
 from Instruction import *
-# from numpy import roll
-import threading, time
-# import pygame.mixer
-#from Characters import *
-#import random
+from Network import *
+import time
 
 Sounds.init()
 
 Sounds.playSound(SoundEffect.THEME)
 
 # Choose gameplay mode
+createSendThread("CHOOSE DIFFICULTY EASY OAR HARD", 10, 10, "t")
 print("CHOOSE DIFFICULTY:")
 print("  (1) EASY")
 print("  (2) HARD")
 
-mode = input(">> ")
-while(mode != '1' and mode != '2'):
-	print("CHOOSE 1 OR 2")
-	mode = input(">> ")
+mode = receive()
+while(mode.lower() != 'easy' and mode.lower() != 'hard'):
+	print("CHOOSE EASY OR HARD")
+	createSendThread("CHOOSE EASY OR HARD", 10, 10, "t")
+	mode = receive()
 
 
 
@@ -36,7 +35,7 @@ southWords = ["south", "down", "outh", "suth", "soth", "souh", "sout", "suoth", 
 westWords  = ["west", "left", "wst", "wet", "wes", "ewst"]
 
 forwardList = ["forward", "forwards", "up", "f", "u"]
-rightList   = ["right", "r"]
+rightList   = ["right", "r", "write"]
 leftList    = ["left", "l"]
 backList	= ["back", "backward", "backwards", "down", "b", "d"]
 
@@ -44,7 +43,9 @@ backList	= ["back", "backward", "backwards", "down", "b", "d"]
 
 movesAllowed = Player.maxMoves
 
-print("WELCOME TO YOUR NIGHTMARE")
+print("WELCOME TO THE ADVENTURE")
+createSendThread("WELCOME TO THE ADVENTURE!", 10, 10, "f")
+
 
 map = GameMap.makeMap()
 
@@ -54,11 +55,13 @@ player = dict["Player"]
 
 Spot.setPlayer(player)
 Spot.setCur(cur)
-if(mode == "1"):
+if(mode == "easy"):
 	GameMap.printMap(map)
 
 Spot.getCur().validMoves()
-dir = input("WHERE WOULD YOU LIKE TO GO? >> ")
+# dir = input("WHERE WOULD YOU LIKE TO GO? >> ")
+createSendThread("WHERE WOULD YOU LIKE TO GO?", 10, 10, "t")
+dir = receive()
 while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 	printMap = True
 	cur = Spot.getCur()
@@ -110,8 +113,7 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 		else:
 			print("YOU MUST GO %s FROM HERE TO REACH THE END\n" % nextDir.upper())
 
-	if(printMap and mode == "1"):
-		pass
+	if(printMap and mode == "easy"):
 		GameMap.printMap(map)
 	GameMap.clearVisited()
 
@@ -124,11 +126,13 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 		#print(f"{remaining} MOVES LEFT")	doesn't work in python 3.4
 		print("%d MOVES LEFT" % remaining)
 	Spot.getCur().validMoves()
-	dir = input("WHERE WOULD YOU LIKE TO GO? >> ")
+	createSendThread("WHERE WOULD YOU LIKE TO GO?", 10, 10, "t")
+	dir = receive()
 
 remaining = player.getRemaining()
 if(dir.lower() == "quit"):
 	print("QUITTER!")
+	createSendThread("QUITTER!", 20, 10, "f")
 	player.lose()
 elif(remaining == 0):
 	player.lose()

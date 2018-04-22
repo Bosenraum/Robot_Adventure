@@ -1,6 +1,7 @@
 from Spot import *
 from Characters import *
 from Enumerations import *
+from Network import *
 import random
 
 class GameMap:
@@ -99,9 +100,11 @@ class GameMap:
 	def fillMap(map):
 		# put the player down first
 		# Get player name
-		name = input("What is your name? >> ")
+		createSendThread("WHAT IS YOUR NAME?", 10, 10, "t")
+		name = receive()
 		if(name.lower()[:4] == "jake" or name.lower()[:5] == "jacob"):
 			print("Sorry, you can't play.")
+			createSendThread("SORRY, YOU CAN'T PLAY.", 10, 10, "f")
 			exit()
 		player = Player(name.upper())
 
