@@ -111,7 +111,10 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 		elif(nextDir == "error"):
 			print("ERROR: ERROR WAS RETURNED")
 		else:
+			sentence = "YOU MUST GO " + nextDir.upper() + " FROM HERE TO REACH THE END"
 			print("YOU MUST GO %s FROM HERE TO REACH THE END\n" % nextDir.upper())
+			createSendThread(sentence, 10, 10, "f")
+
 
 	if(printMap and mode == "easy"):
 		GameMap.printMap(map)
@@ -120,11 +123,14 @@ while(dir.lower() != "quit" and player.getMovesTaken() != Player.maxMoves):
 	remaining = player.getRemaining()
 	if(remaining == 1):
 		print("LAST MOVE")
+		createSendThread("LAST MOVE", 10, 10, "f")
 	elif(remaining == 0):
 		break
 	elif(remaining <= 5):
 		#print(f"{remaining} MOVES LEFT")	doesn't work in python 3.4
+		move_left = str(remaining) + " MOVES LEFT"
 		print("%d MOVES LEFT" % remaining)
+		createSendThread(move_left, 10, 10, "f")
 	Spot.getCur().validMoves()
 	createSendThread("WHERE WOULD YOU LIKE TO GO?", 10, 10, "t")
 	dir = receive()

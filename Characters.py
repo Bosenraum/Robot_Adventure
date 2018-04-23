@@ -15,7 +15,7 @@ class Player:
 	maxMoves = 30
 
 	def __init__(self, name):
-		if(name.lower() != "suw"):
+		if(name.lower() != "super"):
 			self.name = name
 			self.hp = Player.maxHP
 			self.damageMin = 20
@@ -89,8 +89,12 @@ class Player:
 
 		#print(f"YOU ATTACKED FOR {damage} damage -- ", end="")
 		print("YOU ATTACKED FOR %d damage -- " % damage, end="")
+		damage_sentence = "YOU ATTACKED FOR " + str(damage) + " DAMAGE"
+		createSendThread(damage_sentence, 10, 10, "f")
 		#print(f"ENEMY HAS {enemy.getHealth()} HP REMAINING")
+		enemy_health = "ENEMY HAS " + str(enemy.getHealth()) + " HP REMAINING"
 		print("ENEMY HAS %d HP REMAINING" % enemy.getHealth())
+		createSendThread(enemy_health, 10, 10, "f")
 
 	def strongAttack(self, enemy):
 		damage = 2*random.choice(range(self.damageMin, self.damageMax+1))
@@ -99,20 +103,29 @@ class Player:
 
 		#print(f"YOU ATTACKED FOR {damage} damage -- ", end="")
 		print("YOU ATTACKED FOR %d damage -- " % damage, end="")
+		damage_sentence = "YOU ATTACKED FOR " + str(damage) + " DAMAGE"
+		createSendThread(damage_sentence, 10, 10, "f")
 		#print(f"ENEMY HAS {enemy.getHealth()} HP REMAINING")
 		print("ENEMY HAS %d HP REMAINING" % enemy.getHealth())
+		enemy_health = "ENEMY HAS " + str(enemy.getHealth()) + " HP REMAINING"
+		createSendThread(enemy_health, 10, 10, "f")
 
 	def heal(self):
 		self.hp = Player.maxHP
 		print("HP REFILLED")
+		createSendThread("HP REFILLED", 10, 10, "f")
 		#print(f"{self.name.upper()}'s HP: {self.hp}")
 		print("%s's HP: %d" % (self.name.upper(), self.hp))
 
 	def getStatus(self):
 		#print(f"{self.getRemaining()} MOVES REMAINING")
 		print("%d MOVES REMAINING" % self.getRemaining())
+		remaining = str(self.getRemaining()) + " MOVES REMAINING"
+		createSendThread(remaining, 10, 10, "f")
 		#print(f"{self.name.upper()}'s HP: {self.hp}")
 		print("%s's HP: %d" % (self.name.upper(), self.hp))
+		health_sentence = self.name + "'S HP is " + str(self.hp)
+		createSendThread(health_sentence, 10, 10, "f")
 
 	def getRemaining(self):
 		return Player.maxMoves - self.movesTaken
@@ -141,6 +154,7 @@ class Player:
 	def lose(self):
 		if(self.cheated):
 			print("HOW COULD YOU CHEAT AND STILL LOSE?!")
+			createSendThread("HOW COUD YOU CHEAT AND STILL LOSE?", 10, 10, "f")
 		else:
 			print("GAME OVER")
 			createSendThread("GAME OVER", 1, 5, "f")
@@ -195,11 +209,17 @@ class Enemy:
 
 		#print(f"Enemy attacked for {damage} damage -- ", end="")
 		print("Enemy attacked for %d damage -- " % damage, end="")
+		enemy_attack = "ENEMY ATTACKED FOR " + str(damage) + " DAMAGE"
+		createSendThread(enemy_attack, 10, 10, "f")
 		#print(f"You have {player.getHealth()} HP remaining")
 		print("You have %d HP remaining" % player.getHealth())
+		player_health = "You have " + str(player.getHealth()) + " HP remaining"
+		createSendThread(player_health, 10, 10, "f")
 
 		Sounds.playSound(soundType)
 
 	def getStatus(self):
 		#print(f"ENEMY HP: {self.hp}")
 		print("ENEMY HP: %d" % self.hp)
+		enemy_health = "Enemy HP is " + str(self.hp)
+		createSendThread(enemy_health, 10, 10, "f")

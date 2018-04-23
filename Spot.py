@@ -67,6 +67,7 @@ class Spot:
 			time.sleep(1)
 			Sounds.playSound(SoundEffect.COFFEE)
 			print("THE BITTER TASTE OF COFFEE FILLS YOU WITH DETERMINATION")
+			createSendThread("THE BITTER TASTE OF COFFEE FILLS YOU WITH DETERMINATION", 10, 10, "f")
 			# Need to clear the visited label for all spots before searching
 
 		elif(self.type == SpotType.FIGHT):
@@ -78,6 +79,7 @@ class Spot:
 			self.type = SpotType.EMPTY
 
 		else:
+			createSendThread("NOTHING TO SEE HERE", 10, 10, "f")
 			print("NOTHING TO SEE HERE")
 			print()
 
@@ -128,6 +130,7 @@ class Spot:
 				Spot.player.move()
 				return self.westSpot
 		else:
+			createSendThread("INVALID MOVE", 10, 10, "f")
 			print("INVALID MOVE")
 			return self
 
@@ -369,7 +372,7 @@ class Spot:
 				self.enemy.attack(Spot.player)
 				Spot.checkLose()
 
-			elif(choice.lower() in ["flee", "f"]):
+			elif(choice.lower() in ["flee", "f", "flea", "run", "run away"]):
 				flee = True
 				break
 			elif(choice.lower() in ["status", "s"]):
@@ -377,6 +380,7 @@ class Spot:
 				self.enemy.getStatus()
 			else:
 				print("INVALID MOVE")
+				createSendThread("INVALID MOVE", 10, 10, "f")
 				self.enemy.attack(Spot.player)
 				Spot.checkLose()
 
@@ -395,51 +399,71 @@ class Spot:
 			soundType = SoundEffect.WRONG
 			#print(f"HELLO {Spot.player.getName()}")
 			print("HELLO %s" % Spot.player.getName())
+			name_sentence = "HELLO " + Spot.player.getName()
+			createSendThread(name_sentence, 2, 5, "f")
 			print("ANSWER THIS RIDDLE IF YOU WISH TO LIVE")
+			createSendThread("ANSWER THIS RIDDLE IF YOU WISH TO LIVE", 2, 5, "f")
 			print("WHAT IS THE CREATURE THAT WALKS ON FOUR LEGS IN THE MORNING,\nTWO LEGS AT NOON,\nAND THREE LEGS IN THE EVENING?\n")
-			answer = input(">> ")
+			createSendThread("WHAT IS THE CREATURE THAT WALKS ON FOUR LEGS IN THE MORNING,TWO LEGS AT NOON,AND THREE LEGS IN THE EVENING?", 2, 5, "t")
+			# answer = input(">> ")
+			answer = receive()
 			print()
-			while(answer.lower() != "man"):
+			while(answer.lower() not in ["man", "human"]):
 				Sounds.playSound(soundType)
 				print("INCORRECT")
+				createSendThread("INCORRECT", 2, 5, "f")
 				Spot.player.loseHealth(50)
 				if(Spot.player.getHealth() <= 0):
 					Sounds.fadeSound(SoundEffect.SPHINX)
 					print("YOU MUST DIE..")
+					createSendThread("YOU MUST DIE!", 2, 5, "f")
 					for i in range(3):
 						print("."*(i+1))
 						time.sleep(1)
 					print("YOU HAVE DIED")
 					Spot.player.lose()
 				#print(f"{Spot.player.getHealth()} HP remaining")
+				health_sentence = str(Spot.player.getHealth()) + " HP REMAINING"
 				print("%s HP remaining" % Spot.player.getHealth())
-				answer = input(">> ")
+				createSendThread(health_sentence, 2, 5, "t")
+				# answer = input(">> ")
+				answer = receive()
 				print()
 			print("*SPHINX DIES*")
+			createSendThread("THE SPHINX HAS DIED", 10, 10, "f")
 			Sounds.fadeSound(SoundEffect.SPHINX)
 			time.sleep(3)
 			Sounds.playSound(SoundEffect.THEME)
 
 		elif(self.funType == FunType.PUZZLE):
 			print("NAME THIS SONG TO CONTINUE")
+			createSendThread("NAME THIS SONG TO CONTINUE", 10, 10, "f")
 			Sounds.fadeSound(SoundEffect.THEME)
 			time.sleep(1)
 			Sounds.playSound(SoundEffect.TWINKLE)
 			time.sleep(5)
 			Sounds.stopSound(SoundEffect.TWINKLE)
-			while(input("NAME THAT SONG (PRESS R TO REPLAY) >> ").lower() != "twinkle"):
+			createSendThread("NAME THAT SONG", 10, 10, "t")
+			answer = receive()
+			while(answer.lower() != "twinkle"):
 				print("WRONG ANSWER. TURN YOUR EARS ON!")
+				createSendThread("WRONG ANSWER. TURN YOUR EARS ON!", 10, 10, "f")
 				time.sleep(1)
 				Sounds.playSound(SoundEffect.TWINKLE)
 				time.sleep(5)
 				Sounds.stopSound(SoundEffect.TWINKLE)
+				createSendThread("NAME THAT SONG", 10, 10, "t")
+				answer = receive()
 			#print(f"{Spot.player.getName()} YOU'RE MUSICAL INTUITION IS UNMATCHED")
-			print("%s YOU'RE MUSICAL INTUITION IS UNMATCHED" % Spot.player.getName())
+			intuition = Spot.player.getName() + " YOUR MUSICAL INTUITION IS UNMATCHED"
+			print("%s YOUR MUSICAL INTUITION IS UNMATCHED" % Spot.player.getName())
+			createSendThread(intuition, 10, 10, "f")
 			Sounds.playSound(SoundEffect.THEME)
 			time.sleep(1)
 
 		else:
 			print("IT'S THE WIZARD BABY!")
+			createSendThread("IT'S THE WIZARD BABY!", 10, 10, "f")
 			fleeCount = 0
 			Sounds.fadeSound(SoundEffect.THEME)
 			time.sleep(1)
@@ -447,13 +471,18 @@ class Spot:
 
 			while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
 				time.sleep(0.5)
-				choice = input("ATTACK (WEAK OR STRONG) >> ")
-				print()
-				if(choice.lower() in ["attack", "a", "weak", "w", "weak attack"]):
+				# choice = input("ATTACK (WEAK OR STRONG) >> ")
+				createSendThread("WEAK OAR STRONG ATTACK?", 10, 10, "t")
+				choice = receive()
+				if(choice.lower() == "rattle keys"):
+					print("THE RATTLING KEYS SOOTHE THE WIZARD BABY AND HE FALLS ASLEEP")
+					createSendThread("THE RATTLING KEYS SOOTHE THE WIZARD BABY AND HE FALLS ASLEEP", 10, 10, "f")
+				elif(choice.lower() in ["attack", "a", "weak", "w", "weak attack"]):
 
 					Spot.player.attack(self.enemy)
 					if(self.enemy.getHealth() <= 0):
 						print("BOSS BABY VANQUISHED!\n")
+						createSendThread("BOSS BABY VANQUISHED", 10, 10, "f")
 						break
 
 					time.sleep(0.5)
@@ -465,8 +494,10 @@ class Spot:
 						Spot.player.strongAttack(self.enemy)
 					else:
 						print("ATTACK MISSED!")
+						createSendThread("ATTACK MISSED!", 10, 10, "f")
 					if(self.enemy.getHealth() <= 0):
 						print("BOSS BABY VANQUISHED!\n")
+						createSendThread("BOSS BABY VANQUISHED", 10, 10, "f")
 						break
 
 					time.sleep(0.5)
@@ -475,6 +506,7 @@ class Spot:
 
 				elif(choice.lower() in ["flee", "f"]):
 					print("CAN'T FLEE THIS FIGHT!")
+					createSendThread("CAN'T FLEE THIS FIGHT!", 10, 10, "f")
 					if(fleeCount >= 1):
 						time.sleep(0.5)
 						self.enemy.attack(Spot.player)
@@ -485,6 +517,7 @@ class Spot:
 					self.enemy.getStatus()
 				else:
 					print("INVALID MOVE")
+					createSendThread("INVALID MOVE", 10, 10, "f")
 					self.enemy.attack(Spot.player)
 					Spot.checkLose()
 

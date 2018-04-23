@@ -31,7 +31,7 @@ def receive():
     # print("waiting")
     input = s.recv(1024)
     input = input.decode('ascii')
-    print(input)
+    # print(input)
     return decode(input)
 
 # receiveThread = threading.Thread(target=receive)
