@@ -45,6 +45,7 @@ movesAllowed = Player.maxMoves
 
 print("WELCOME TO THE ADVENTURE")
 createSendThread("WELCOME TO THE ADVENTURE!", 10, 10, "f")
+wave()
 
 
 map = GameMap.makeMap()

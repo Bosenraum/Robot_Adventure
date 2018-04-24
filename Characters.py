@@ -6,6 +6,7 @@ from Enumerations import *
 # from numpy import roll
 import random, time
 from Network import *
+from Instruction import *
 #from pygame import mixer
 
 Sounds.init()
@@ -82,6 +83,7 @@ class Player:
 		self.hp -= val
 
 	def attack(self, enemy):
+		arm_attack()
 		damage = random.choice(range(self.damageMin, self.damageMax+1))
 		enemy.loseHealth(damage)
 
@@ -97,6 +99,7 @@ class Player:
 		createSendThread(enemy_health, 10, 10, "f")
 
 	def strongAttack(self, enemy):
+		arm_attack()
 		damage = 2*random.choice(range(self.damageMin, self.damageMax+1))
 		enemy.loseHealth(damage)
 		Sounds.playSound(SoundEffect.HARD)
