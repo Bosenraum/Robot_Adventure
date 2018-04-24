@@ -3,6 +3,7 @@
 from Enumerations import *
 from Characters import EnemyType, Player
 from Music import *
+from Instruction import *
 # from Instruction import *
 import random
 import time
@@ -95,6 +96,8 @@ class Spot:
 			dirs.append(Directions.SOUTH)
 		if(self.westSpot != None):
 			dirs.append(Directions.WEST)
+
+		robot_flee()
 
 		Spot.cur.move(random.choice(dirs))
 
@@ -343,7 +346,7 @@ class Spot:
 
 	def fight(self):
 		print("FIGHT!")
-		createSendThread("FIGHT!", 10, 10, "f")
+		# createSendThread("FIGHT!", 10, 10, "f")
 		flee = False
 		if(self.enemy.getType() == EnemyType.EASY):
 			print("EASY PEASY")
@@ -358,6 +361,7 @@ class Spot:
 		while(self.enemy.getHealth() > 0 and Spot.player.getHealth() > 0):
 			time.sleep(0.5)
 			createSendThread("ATTACK OAR FLEE?", 10, 10, "t")
+			time.sleep(2)
 			choice = receive()
 			# print()
 			if(choice.lower() in ["attack", "a"]):

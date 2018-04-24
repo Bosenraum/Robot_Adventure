@@ -154,7 +154,7 @@ class Player:
 	def lose(self):
 		if(self.cheated):
 			print("HOW COULD YOU CHEAT AND STILL LOSE?!")
-			createSendThread("HOW COUD YOU CHEAT AND STILL LOSE?", 10, 10, "f")
+			createSendThread("HOW COULD YOU CHEAT AND STILL LOSE?", 20, 10, "f")
 		else:
 			print("GAME OVER")
 			createSendThread("GAME OVER", 1, 5, "f")

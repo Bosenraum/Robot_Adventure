@@ -1,5 +1,5 @@
 from maestro import Controller
-import time
+import time, threading
 
 c0 = Controller()
 
@@ -108,3 +108,94 @@ turnRight = Motor(forward_back=0, left_right=-1, delay=1, forward_back_target=0,
 turnLeft = Motor(forward_back=0, left_right=1, delay=1, forward_back_target=0, left_right_target=1100)
 forward = Motor(forward_back=-1, left_right=0, delay=1, forward_back_target=1100, left_right_target=0)
 turnAround = Motor(forward_back=0, left_right=-1, delay=2, forward_back_target=0, left_right_target=1100)
+
+def open_close(n):
+    for i in range(n):
+        c0.setTarget(RIGHT_HAND, MIN)
+        time.sleep(1)
+        c0.setTarget(RIGHT_HAND, MID)
+        time.sleep(1)
+
+def raise_arm():
+    c0.setTarget(RIGHT_SHOULDER_UD, MAX)
+
+def lower_arm():
+    c0.setTarget(RIGHT_SHOULDER_UD, MIN)
+
+def straighten_arm():
+    c0.setTarget(RIGHT_SHOULDER_LR, 6500)
+    c0.setTarget(RIGHT_ELBOW, MID)
+    c0.setTarget(RIGHT_WRIST_UD, MID)
+    c0.setTarget(RIGHT_WRIST_ROTATE, MID)
+
+def bend_arm():
+    # c0.setTarget(RIGHT_SHOULDER_UD, MID)
+    c0.setTarget(RIGHT_ELBOW, 8000)
+
+def rest_arm():
+    c0.setTarget(RIGHT_SHOULDER_UD, MID)
+
+def wrist_up():
+    c0.setTarget(RIGHT_WRIST_UD, 8500)
+
+def wrist_rest():
+    c0.setTarget(RIGHT_WRIST_UD, MID)
+
+def wrist_down():
+    c0.setTarget(RIGHT_WRIST_UD, 3500)
+
+def wrist_right():
+    c0.setTarget(RIGHT_WRIST_ROTATE, 400)
+
+def wrist_center():
+    c0.setTarget(RIGHT_WRIST_ROTATE, MID)
+
+def wrist_left():
+    c0.setTarget(RIGHT_WRIST_ROTATE, 8000)
+
+def wave():
+    raise_arm()
+    wrist_up()
+    time.sleep(1)
+    for i in range(3):
+        c0.setTarget(RIGHT_SHOULDER_LR, 5000)
+        wrist_left()
+        time.sleep(.75)
+        c0.setTarget(RIGHT_SHOULDER_LR, 7000)
+        wrist_right()
+        time.sleep(.75)
+    wrist_center()
+    straighten_arm()
+    lower_arm()
+
+def arm_attack():
+    raise_arm()
+    bend_arm()
+    wrist_up()
+    wrist_right()
+    c0.setTarget(RIGHT_SHOULDER_LR, 8000)
+    time.sleep(2)
+    wrist_center()
+    wrist_rest()
+    rest_arm()
+    straighten_arm()
+
+def run_away():
+    raise_arm()
+    # time.sleep(1)
+    bend_arm()
+    time.sleep(.5)
+    for i in range(3):
+        wrist_left()
+        time.sleep(.5)
+        wrist_right()
+        time.sleep(.5)
+
+
+def robot_flee():
+    runThread = threading.Thread(target=run_away)
+    runThread.start()
+    turnAround.execute()
+    wrist_center()
+    lower_arm()
+    straighten_arm()
