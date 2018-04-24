@@ -17,6 +17,8 @@ class Sounds:
 	sphinx = None
 	coffee = None
 	heal = None
+	vanish = None
+	best = None
 
 	playing = None
 
@@ -37,6 +39,8 @@ class Sounds:
 		Sounds.sphinx     = mixer.Sound("audio/sphinx.wav")
 		Sounds.coffee     = mixer.Sound("audio/coffee_shop.wav")
 		Sounds.heal       = mixer.Sound("audio/heal.wav")
+		Sounds.vanish     = mixer.Sound("audio/VOBD_Assassin_PL_Start_Action_Skill_23_1-i_vanish.wav")
+		Sounds.best       = mixer.Sount("audio/NAR_Live_Claptrap_194-i_am_the_best_robot.wav")
 
 	@staticmethod
 	def getPlaying():
@@ -72,6 +76,10 @@ class Sounds:
 			Sounds.playing = SoundEffect.COFFEE
 		elif(sound == SoundEffect.HEAL):
 			Sounds.heal.play()
+		elif(sound == SoundEffect.VANISH):
+			Sounds.vanish.play()
+		elif(sound == SoundEffect.BEST):
+			Sounds.best.play()
 
 
 	@staticmethod
@@ -100,6 +108,10 @@ class Sounds:
 			Sounds.coffee.stop()
 		elif(sound == SoundEffect.HEAL):
 			Sounds.heal.stop()
+		elif(sound == SoundEffect.VANISH):
+			Sounds.vanish.stop()
+		elif(sound == SoundEffect.BEST):
+			Sounds.best.stop()
 
 	@staticmethod
 	def fadeSound(sound):
@@ -123,3 +135,7 @@ class Sounds:
 			Sounds.sphinx.fadeout(3000)
 		elif(sound == SoundEffect.COFFEE):
 			Sounds.coffee.fadeout(1000)
+		elif(sound == SoundEffect.VANISH):
+			Sounds.vanish.fadeout(1000)
+		elif(sound == SoundEffect.BEST):
+			Sounds.best.fadeout(1000)

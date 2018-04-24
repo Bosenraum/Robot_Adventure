@@ -152,6 +152,8 @@ class Player:
 		time.sleep(1)
 		Sounds.playSound(SoundEffect.WIN)
 		time.sleep(2)
+		Sounds.playSound(SoundEffect.BEST)
+		time.sleep(12)
 		exit()
 
 	def lose(self):

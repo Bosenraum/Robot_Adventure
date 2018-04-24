@@ -34,6 +34,8 @@ class SoundEffect(Enum):
 	SPHINX  = 10
 	COFFEE  = 11
 	HEAL    = 12
+	VANISH  = 13
+	BEST    = 14
 
 class EnemyType(Enum):
 	EASY   = 1

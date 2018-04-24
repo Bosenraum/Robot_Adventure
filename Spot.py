@@ -97,6 +97,7 @@ class Spot:
 		if(self.westSpot != None):
 			dirs.append(Directions.WEST)
 
+		Sounds.playSound(SoundEffect.VANISH)
 		robot_flee()
 
 		Spot.cur.move(random.choice(dirs))
