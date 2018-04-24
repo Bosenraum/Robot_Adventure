@@ -25,7 +25,7 @@ def send(message, pitch, speed, stt="f"):
 def createSendThread(message, pitch, speed, stt="f"):
     sendThread = threading.Thread(target=lambda msg=message, pitch=pitch, speed=speed, stt=stt: send(msg, pitch, speed, stt))
     sendThread.start()
-    time.sleep(1)
+    time.sleep(1.5)
 
 def receive():
     # createSendThread("STT", 0, 0)
