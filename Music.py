@@ -40,7 +40,7 @@ class Sounds:
 		Sounds.coffee     = mixer.Sound("audio/coffee_shop.wav")
 		Sounds.heal       = mixer.Sound("audio/heal.wav")
 		Sounds.vanish     = mixer.Sound("audio/VOBD_Assassin_PL_Start_Action_Skill_23_1-i_vanish.wav")
-		Sounds.best       = mixer.Sount("audio/NAR_Live_Claptrap_194-i_am_the_best_robot.wav")
+		Sounds.best       = mixer.Sound("audio/NAR_Live_Claptrap_194-i_am_the_best_robot.wav")
 
 	@staticmethod
 	def getPlaying():
